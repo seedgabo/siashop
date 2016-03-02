@@ -1,0 +1,31 @@
+[
+  {
+    "fieldInput": "id:increments",
+    "htmlType": "",
+    "validations": "",
+    "searchable": false,
+    "fillable": false,
+    "primary": true
+  }, 
+  {
+    "fieldInput": "nombre:string",
+    "htmlType": "text",
+    "validations": "required|min:8|max:50",
+    "searchable": true,
+    "fillable": true
+  },
+  {
+    "fieldInput": "descripción:text",
+    "htmlType": "textarea",
+    "validations": "required|min:8",
+    "searchable": true,
+    "fillable": true
+  },
+  {
+    "fieldInput": "users_id:string",
+    "htmlType": "select:usuarios",
+    "validations": "required|array",
+    "searchable": true,
+    "fillable": true
+  }
+]

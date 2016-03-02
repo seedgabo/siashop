@@ -1,0 +1,52 @@
+[
+  {
+    "fieldInput": "id:increments",
+    "htmlType": "",
+    "validations": "",
+    "searchable": false,
+    "fillable": false,
+    "primary": true
+  }, 
+  {
+    "fieldInput": "titulo:string",
+    "htmlType": "text",
+    "validations": "required|min:8|max:50",
+    "searchable": true,
+    "fillable": true
+  },
+  {
+    "fieldInput": "contenido:text",
+    "htmlType": "textarea",
+    "validations": "required|min:8",
+    "searchable": true,
+    "fillable": true
+  },
+  {
+    "fieldInput": "user_id:string",
+    "htmlType": "select:usuarios",
+    "validations": "required",
+    "searchable": true,
+    "fillable": true
+  },
+  {
+    "fieldInput": "estado:enum",
+    "htmlType": "enum:abierto,completado,en curso, rechazado",
+    "validations": "required",
+    "searchable": true,
+    "fillable": true
+  },
+  {
+    "fieldInput": "categoria_id:string",
+    "htmlType": "select:categorias",
+    "validations": "required",
+    "searchable": true,
+    "fillable": true
+  },
+  {
+    "fieldInput": "archivo:string",
+    "htmlType": "file",
+    "validations": "unique:tickets",
+    "searchable": true,
+    "fillable": true
+  }
+]
