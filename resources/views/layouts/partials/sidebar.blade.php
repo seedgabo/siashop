@@ -16,10 +16,10 @@
             </div>
         @endif
 
-
+    
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
-            <li class="header text-center">MENU</li>
+            <li class="header text-center"><a href="{{url('menu')}}">MENU</a></li>
             <!-- Optionally, you can add icons to the links -->
             <li><a href="{{ url('home') }}">
                 <i class='fa fa-building'></i> 

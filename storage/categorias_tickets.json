@@ -22,7 +22,7 @@
     "fillable": true
   },
   {
-    "fieldInput": "users_id:string",
+    "fieldInput": "user_id:string",
     "htmlType": "select:usuarios",
     "validations": "required|array",
     "searchable": true,

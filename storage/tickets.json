@@ -1,4 +1,3 @@
-[
   {
     "fieldInput": "id:increments",
     "htmlType": "",
@@ -10,19 +9,26 @@
   {
     "fieldInput": "titulo:string",
     "htmlType": "text",
-    "validations": "required|min:8|max:50",
+    "validations": "required|min:3|max:50",
     "searchable": true,
     "fillable": true
   },
   {
     "fieldInput": "contenido:text",
     "htmlType": "textarea",
-    "validations": "required|min:8",
+    "validations": "required|min:3",
     "searchable": true,
     "fillable": true
   },
   {
     "fieldInput": "user_id:string",
+    "htmlType": "select:usuarios",
+    "validations": "required",
+    "searchable": true,
+    "fillable": true
+  },
+  {
+    "fieldInput": "guardian_id:string",
     "htmlType": "select:usuarios",
     "validations": "required",
     "searchable": true,

@@ -42,9 +42,8 @@ desired effect
         @include('layouts.partials.contentheader')
 
         <!-- Main content -->
-        <section class="content">
+        <section class="content">            
             @include('flash::message')
-            <!-- Your Page Content Here -->
             @yield('main-content')
             @yield('content')
         </section><!-- /.content -->

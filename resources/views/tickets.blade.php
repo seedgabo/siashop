@@ -1,6 +1,17 @@
 @extends('layouts.app')
 @section('content')
 	<div class="container">
+	<div class="text-center">
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{url('ticket')}}">Tickets Abiertos</a>
+			</li>
+			<li>
+				<a href="{{url('mis-tickets')}}">mis Tickets</a>
+			</li>
+			<li> <a href="{{url('tickets/todos')}}">Todos los Tickets </a></li>
+		</ol>
+	</div>
 	<div class="text-right">
 		<a class="btn btn-primary" data-toggle="modal" href='#modal-ticket'><i class="fa fa-plus"></i> Crear un ticket</a>
 	</div>
@@ -11,7 +22,9 @@
 					<th>Categoría</th>
 					<th>Estado</th>
 					<th>contenido</th>
-					<th>Archivo</th>
+					<th>Usuario</th>
+					<th>Asignado a</th>
+					<th>Vence el</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -26,12 +39,9 @@
 					<td>{{\App\Models\categoriasTickets::find($ticket->categoria_id)->nombre}}</td>
 					<td>{{$ticket->estado}}</td>
 					<td>{{str_limit($ticket->contenido,100)}}</td>
-					<td>
-					@if ($ticket->archivo == null || $ticket->archivo == '')
-						No Posee
-					@else
-						<a class="btn btn-success btn-xs" href="{{$ticket->archivo()}}">Ver</a>
-					@endif</td>
+					<td>{{ \App\User::find($ticket->user_id)->nombre}}</td>
+					<td>{{ \App\User::find($ticket->guardian_id)->nombre}}</td>
+					<td>{{ \App\Funciones::transdate($ticket->vencimiento->format('l j \d\e F \d\e Y h:i:s A'))}}</td>
 				</tr>
 			 @empty
 			 	Ningún ticket existente
@@ -71,10 +81,30 @@
 				        <small class="text-danger">{{ $errors->first('categoria_id') }}</small>
 				    </div>
 
+				    <div class="form-group @if($errors->first('guardian_id')) has-error @endif">
+				        {!! Form::label('guardian_id', 'Asignar a:') !!}
+				        {!! Form::select('guardian_id',\App\User::lists("nombre","id"), null, ['id' => 'guardian_id', 'class' => 'form-control chosen', 'required' => 'required']) !!}
+				        <small class="text-danger">{{ $errors->first('guardian_id') }}</small>
+				    </div>
+
+				    <div class="form-group @if($errors->first('transferible')) has-error @endif">
+				        {!! Form::label('transferible', 'Transerible?', ['class' => 'col-sm-3 control-label']) !!}
+				        <div class="col-sm-9">
+				        	{!! Form::select('transferible',[1=>"Si",0=> "No"], 1, ['id' => 'transferible', 'class' => 'form-control chosen']) !!}
+				        	<small class="text-danger">{{ $errors->first('transferible') }}</small>
+				    	</div>
+				    </div>
+
+				    <div class="form-group @if($errors->first('vencimiento')) has-error @endif">
+				        {!! Form::label('vencimiento', 'Fecha de Expiracón') !!}
+				        {!! Form::date('vencimiento', null, ['class' => 'form-control datetimepicker', 'required' => 'required']) !!}
+				        <small class="text-danger">{{ $errors->first('vencimiento') }}</small>
+				    </div>
+
 				    <div class="form-group @if($errors->first('archivo')) has-error @endif">
 				        {!! Form::label('archivo', 'Archivo') !!}
 				        {!! Form::file('archivo', []) !!}
-				        <p class="help-block">El archivo debe pesar menos de 10Mb</p>
+				        <p class="help-block">El archivo debe pesar menos de 10Mb, solo documentos, imagenes y archivos comprimidos estan permitidos</p>
 				        <small class="text-danger">{{ $errors->first('archivo') }}</small>
 				    </div>
 				
@@ -92,19 +122,22 @@
 	</div>
 
 	<script>
-	$(document).ready(function() { 
-			$('#nuevoTicket').ajaxForm(function(data) {
-				$.toast({
-	            		heading: 'Hecho',
-	            		text: data,
-	            		showHideTransition: 'slide',
-	            		icon: 'success',
-	            		position: 'mid-center',
-	            	})
-				$("textarea").html();
-				$("textarea").val();
-				location.reload(); 
-			});
+		$(document).ready(function() { 
+				$('#nuevoTicket').ajaxForm(function(data) {
+					$.toast({
+		            		heading: 'Hecho',
+		            		text: data,
+		            		showHideTransition: 'slide',
+		            		icon: 'success',
+		            		position: 'mid-center',
+		            	})
+					$("textarea").html();
+					$("textarea").val();
+					location.reload(); 
+				});
+				$('#modal-ticket').on('shown.bs.modal', function () {
+				  $('.chosen').chosen('destroy').chosen();
+				});
 		});
 	</script>
 @stop

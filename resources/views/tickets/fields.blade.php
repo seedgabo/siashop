@@ -1,7 +1,7 @@
 <!--- Titulo Field --->
 <div class="form-group col-sm-6">
     {!! Form::label('titulo', 'Titulo:') !!}
-    {!! Form::text('titulo', null, ['class' => 'form-control']) !!}
+    {!! Form::text('titulo', null, ['class' => 'form-control ']) !!}
 </div>
 
 <!--- Contenido Field --->
@@ -12,20 +12,26 @@
 
 <!--- User Id Field --->
 <div class="form-group col-sm-6">
-    {!! Form::label('user_id', 'User Id:') !!}
-    {!! Form::select('user_id', App\User::lists("nombre","id") , null, ['class' => 'form-control']) !!}
+    {!! Form::label('user_id', 'Usuario:') !!}
+    {!! Form::select('user_id', App\User::lists("nombre","id") , null, ['class' => 'form-control chosen']) !!}
+</div>
+
+<!--- Guardian Id Field --->
+<div class="form-group col-sm-6">
+    {!! Form::label('guardian_id', 'Guardian:') !!}
+    {!! Form::select('guardian_id', App\User::lists("nombre","id") , null, ['class' => 'form-control chosen']) !!}
 </div>
 
 <!--- Estado Field --->
 <div class="form-group col-sm-6">
     {!! Form::label('estado', 'Estado:') !!}
-    {!! Form::select('estado', ['abierto' => 'abierto', 'completado' => 'completado', 'en curso' => 'en curso', ' rechazado' => ' rechazado'], null, ['class' => 'form-control']) !!}
+    {!! Form::select('estado', ['abierto' => 'abierto', 'completado' => 'completado', 'en curso' => 'en curso', ' rechazado' => ' rechazado'], null, ['class' => 'form-control chosen']) !!}
 </div>
 
 <!--- Categoria Id Field --->
 <div class="form-group col-sm-6">
-    {!! Form::label('categoria_id', 'Categoria Id:') !!}
-    {!! Form::select('categoria_id', \App\Models\CategoriasTickets::lists("nombre","id"), null, ['class' => 'form-control']) !!}
+    {!! Form::label('categoria_id', 'Categoria:') !!}
+    {!! Form::select('categoria_id', \App\Models\CategoriasTickets::lists("nombre","id"), null, ['class' => 'form-control chosen']) !!}
 </div>
 
 <!--- Archivo Field --->
@@ -33,6 +39,20 @@
     {!! Form::label('archivo', 'Archivo:') !!}
     {!! Form::file('archivo') !!}
 </div>
+
+<!--- vencimiento Field --->
+<div class="form-group col-sm-6">
+    {!! Form::label('vencimiento', 'Vence el:') !!}
+    {!! Form::date('vencimiento',null, ['class' => 'form-control datetimepicker']) !!}
+</div>
+
+<!-- Transferible Field --->
+<div class="form-group col-sm-6">
+    {!! Form::label('transferible', 'Transferible:') !!}
+    {!! Form::select('transferible',["0" => "no" , "1" => "si"], null ,['class' => 'form-control chosen']) !!}
+</div>
+    
+
 
 <!--- Submit Field --->
 <div class="form-group col-sm-12">

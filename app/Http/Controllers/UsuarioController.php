@@ -69,7 +69,8 @@ class UsuarioController extends Controller
     public function edit($id)
     {
         $usuario = User::find($id);
-        return view('usuarios.editar')->withUsuario($usuario);    }
+        return view('usuarios.editar')->withUsuario($usuario);    
+    }
 
     /**
      * Update the specified resource in storage.
@@ -83,7 +84,7 @@ class UsuarioController extends Controller
         $data = $request->except("_method","_token");
         $usuario= User::find($id);
         $usuario->fill($data);
-        if ($request->has('password'))
+        if ($request->has('password') && $request->input('password') != "")
             $usuario->password = Hash::make($request->input('password'));
         $usuario->save();
         Flash::success('Usuario Actualizado');

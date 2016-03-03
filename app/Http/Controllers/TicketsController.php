@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Funciones;
 use App\Http\Requests;
 use App\Http\Requests\CreateTicketsRequest;
 use App\Http\Requests\UpdateTicketsRequest;
 use App\Models\Tickets;
 use App\Repositories\TicketsRepository;
+use App\User;
 use Flash;
 use Illuminate\Http\Request;
 use InfyOm\Generator\Controller\AppBaseController;
@@ -67,7 +69,7 @@ class TicketsController extends AppBaseController
             $tickets->archivo = $nombre;
             $tickets->save();
         }
-
+        Funciones::sendMailNewTicket($tickets, \App\User::find($tickets->user_id), \App\User::find($tickets->guardian_id));
         Flash::success('Tickets guardado correctamente.');
 
         return redirect(route('tickets.index'));
@@ -124,13 +126,14 @@ class TicketsController extends AppBaseController
     public function update($id, UpdateTicketsRequest $request)
     {
         $tickets = $this->ticketsRepository->findWithoutFail($id);
-
         if (empty($tickets)) {
             Flash::error('Tickets no encontrado');
 
             return redirect(route('tickets.index'));
         }
+
         $tickets = $this->ticketsRepository->update($request->except("archivo"), $id);
+
         if($request->hasFile('archivo'))
         {
             $nombre = $request->file("archivo")->getClientOriginalName();
@@ -138,6 +141,7 @@ class TicketsController extends AppBaseController
             $tickets->archivo = $nombre;
             $tickets->save();
         }
+
         Flash::success('Tickets guardado correctamente.');
 
         return redirect(route('tickets.index'));

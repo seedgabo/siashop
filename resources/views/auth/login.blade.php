@@ -36,7 +36,7 @@
         </div>
         <div class="row">
             <div class="col-xs-8">
-                <div class="checkbox icheck">
+                <div>
                     <label>
                         <input type="checkbox" name="remember"> Recordar
                     </label>
@@ -55,15 +55,6 @@
 
     @include('layouts.partials.scripts_auth')
 
-    <script>
-        $(function () {
-            $('input').iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue',
-                increaseArea: '20%' // optional
-            });
-        });
-    </script>
 </body>
 
 @endsection

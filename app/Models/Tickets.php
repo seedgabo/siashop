@@ -5,64 +5,25 @@ namespace App\Models;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * @SWG\Definition(
- *      definition="Tickets",
- *      required={titulo, contenido, user_id, estado, categoria_id},
- *      @SWG\Property(
- *          property="id",
- *          description="id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="titulo",
- *          description="titulo",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="contenido",
- *          description="contenido",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="user_id",
- *          description="user_id",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="estado",
- *          description="estado",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="categoria_id",
- *          description="categoria_id",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="archivo",
- *          description="archivo",
- *          type="string"
- *      )
- * )
- */
 class Tickets extends Model
 {
     use SoftDeletes;
 
     public $table = "tickets";
     
-	protected $dates = ['deleted_at'];
+	protected $dates = ['deleted_at',"vencimiento"];
 
     
     public $fillable = [
         "titulo",
 		"contenido",
 		"user_id",
+        "guardian_id",
 		"estado",
 		"categoria_id",
-		"archivo"
+		"archivo",
+        "vencimiento",
+        "transferible"
     ];
 
     /**
@@ -73,10 +34,13 @@ class Tickets extends Model
     protected $casts = [
         "titulo" => "string",
 		"contenido" => "string",
-		"user_id" => "string",
+        "user_id" => "string",
+        "guardian_id" => "string",
 		"estado" => "string",
 		"categoria_id" => "string",
-		"archivo" => "string"
+		"archivo" => "string",
+        "vencimiento" => "date",
+        "transferible" => "string"
     ];
 
     /**
@@ -85,9 +49,10 @@ class Tickets extends Model
      * @var array
      */
     public static $rules = [
-        "titulo" => "required|min:8|max:50",
-		"contenido" => "required|min:8",
-		"user_id" => "required",
+        "titulo" => "required|min:3|max:50",
+		"contenido" => "required|min:3",
+        "user_id" => "required",
+        "guardian_id" => "required",
 		"estado" => "required",
 		"categoria_id" => "required",
 		"archivo" => "unique:tickets"

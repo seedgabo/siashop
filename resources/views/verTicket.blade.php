@@ -1,11 +1,26 @@
 @extends('layouts.app')
 @section('content')
+
 <div class="container-fluid">
+<div class="text-center">
+	<ol class="breadcrumb">
+		<li>
+			<a href="{{url('ticket')}}">Tickets Abiertos</a>
+		</li>
+		<li>
+			<a href="{{url('mis-tickets')}}">mis Tickets</a>
+		</li>
+		<li> <a href="{{url('tickets/todos')}}">Todos los Tickets </a></li>
+
+		<li class="active">{{$ticket->titulo}}</li>
+	</ol>
+</div>
 	<div class="col-md-9">
 		<div class="panel panel-primary">
 		   <div style="text-transform: uppercase;" class="panel-heading text-center">
-	   		<p class="text-right">{!! App\Models\CategoriasTickets::find($ticket->categoria_id)->nombre !!}</p>
-		    <h4>{{$ticket->titulo}}</h4>
+	   		<p class="">{{$ticket->titulo}}
+		    	<span class="pull-right"><b>Categoría:</b> {!! App\Models\CategoriasTickets::find($ticket->categoria_id)->nombre !!}</span>
+	   		</p>
 		   </div>
 			<div class="panel-body">
 				{!! $ticket->contenido !!}
@@ -15,14 +30,23 @@
 			</div>
 			<div class="panel-footer">
 			<div class="container-fluid">
-				
-			<div class="col-md-4 form-inline">
-				{!! Form::label('estado', 'Estado:') !!}
-    			{!! Form::select('estado', ['abierto' => 'abierto', 'completado' => 'completado', 'en curso' => 'en curso', ' rechazado' => ' rechazado'], $ticket->estado, ['id'=> 'estado','class' => 'form-control', 'onChange' => "cambiarEstado($ticket->id , this.value)"]) !!}
+				@if (Auth::user()->id == $ticket->guardian_id || Auth::user()->id == $ticket->user_id)
+				<div class="col-md-4 form-inline">
+					{!! Form::label('estado', 'Estado:') !!}
+	    			{!! Form::select('estado', ['abierto' => 'abierto', 'completado' => 'completado', 'en curso' => 'en curso', ' rechazado' => ' rechazado'], $ticket->estado, ['id'=> 'estado','class' => 'form-control chosen', 'onChange' => "cambiarEstado($ticket->id , this.value)"]) !!}
+				</div>
+				@if ($ticket->transferible == 1)
+				<div class="col-md-4 form-inline">
+					{!! Form::label('guardian', 'Guardian:') !!}
+	    			{!! Form::select('guardian',\App\User::lists("nombre","id"), $ticket->estado, ['id'=> 'estado','class' => 'form-control chosen', 'onChange' => "cambiarGuardian($ticket->id , this.value)"]) !!}
+				</div>
+				@endif
+				@endif
+				<p class="text-right">Creado por: {{\App\USer::find($ticket->user_id)->nombre}}</p>
+				<p class="text-right">Asignado a {{\App\USer::find($ticket->guardian_id)->nombre}}</p>
 			</div>
-				<p class="text-right">{{\App\USer::find($ticket->user_id)->nombre}}</p>
 			</div>
-			</div>
+				<small class="pull-right" style="color:red">Vence el: {{\App\Funciones::transdate($ticket->vencimiento->format('l j \d\e F \d\e Y h:i:s A'))}}</small>
 		</div>
 	</div>
 	<div class="col-md-3 well hover">

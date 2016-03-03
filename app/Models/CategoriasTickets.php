@@ -81,8 +81,8 @@ class CategoriasTickets extends Model
      * @var array
      */
     public static $rules = [
-        "nombre" => "required|min:8|max:50",
-		"descripción" => "required|min:8",
+        "nombre" => "required|min:3|max:50",
+		"descripción" => "required|min:3",
 		"user_id" => "required"
     ];
 }

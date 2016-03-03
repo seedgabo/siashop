@@ -33,7 +33,7 @@
 
 	   <div class="form-group @if($errors->first('empresas_id')) has-error @endif">
 	       {!! Form::label('empresas_id', 'Empresas') !!}
-	       {!! Form::select('empresas_id[]', App\Empresas::lists('nombre','id'), null, ['id' => 'empresas_id', 'class' => 'form-control', 'required' => 'required', 'multiple']) !!}
+	       {!! Form::select('empresas_id[]', App\Empresas::lists('nombre','id'), null, ['id' => 'empresas_id', 'class' => 'form-control chosen', 'required' => 'required', 'multiple']) !!}
 	       <small class="text-danger">{{ $errors->first('empresas_id') }}</small>
 	   </div>
 	 

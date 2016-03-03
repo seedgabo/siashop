@@ -39,7 +39,7 @@
                     <div class="panel-body text-center">
                       <a href="{{url('ticket')}}">
                         <img src="{{asset('img/tickets.jpg')}}" height="200" alt="">
-                        <h5>Gestion de soportes</h5>
+                        <h5>Tickets de Soporte</h5>
                       </a>
                     </div>
                 </div>

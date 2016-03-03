@@ -3,20 +3,17 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-10 col-md-offset-1">
         <h4>Seleccione la Empresa: </h4>
+        <div class="list-group col-md-6 col-md-offset-3">
         @forelse ($empresas as $empresa)
-      <div class="col-md-6 text-center hover" style="margin-top: 10px;">
-          <a href="{{url('ajax/setEmpresa/'. $empresa->id)}}" onclick="setEmpresa({{$empresa->id}})"> 
-         <img src="{{asset('img/empresas/'. $empresa->id .'.jpg')}}" width="100%" alt="">
-           <button class="btn btn-default btn-lg  btn-default btn-block">
-              Seleccionar {{$empresa->nombre}}
-           </button> 
-           </a>
-      </div>
+          <a class="list-group-item text-center" href="{{url('ajax/setEmpresa/'. $empresa->id)}}" onclick="setEmpresa({{$empresa->id}})"> 
+            <img class="img-rounded" width="70px" src="{{asset('img/empresas/'. $empresa->id .'.jpg')}}">
+             <pre> Seleccionar {{$empresa->nombre}}</pre>
+          </a>
         @empty
         @endforelse
         </div>
     </div>
 </div>
+
 @endsection

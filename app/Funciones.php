@@ -30,6 +30,28 @@ class Funciones
         }
     }
 
+    public static function  transdate($cadena, $diferencia = false)
+	{
+		$recibido = array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Mon','Tue','Wed','Thu','Fri','Sat','Sun','January','February','March','April','May','June','July','August','September','October','November','December','second','seconds','minute','minutes','day','days','hour','hours','month','months','year','years','week','weeks','before','after',"of");
+		$traducido = array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Lun','Mar','Mie','Jue','Vie','Sab','Dom','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre','Segundo','Segundos','Minuto','Minutos','Dia','Dias','Hora','Horas','Mes','Meses','Año','Años','Semana','Semanas','Antes','Despues',"de");
+		$texto = str_replace($recibido,$traducido,$cadena);
+		if (ends_with($texto,"Antes"))
+		{
+			$texto = "Dentro de " .str_replace("Antes","",$texto); 
+		}
+		if (ends_with($texto,"Despues"))
+		{
+			$texto = "Hace " .str_replace("Despues","",$texto); 
+		}
+
+		if($diferencia == true)
+		{
+			$texto = str_replace(["Dentro de ", "Hace "],"",$texto); 
+		}
+
+		return $texto;
+	}
+
     public static function  printable($array)
     {
      if (count($array) > 0)
@@ -108,6 +130,16 @@ class Funciones
             $m->from('sistemaSiasoft@siasoftsas.com', $empresa->nombre);
             $m->to($user->email);
             $m->subject('¡Usuario Creado con Exito!');
+        });
+    }
+
+    public static function sendMailNewTicket($ticket, $user, $guardian)
+    {
+        Mail::send('emails.NewTicket', ['user' => $user,'guardian' => $guardian ,'ticket' => $ticket], function ($m) 
+            use ($user, $guardian) 
+        {
+            $m->from('sistemaSiasoft@siasoftsas.com', "Sistema Siasoft");
+            $m->to($guardian->email)->subject('¡Nuevo Ticket Asignado!');
         });
     }
 
