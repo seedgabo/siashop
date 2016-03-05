@@ -1,0 +1,18 @@
+Nothing to migrate.
+
+                                                                               
+  [Illuminate\Database\QueryException]                                         
+  SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'SeeD  
+  Gabo@gmail.com' for key 'users_email_unique' (SQL: insert into `users` (`no  
+  mbre`, `email`, `password`, `empresas_id`, `admin`, `cod_vendedor`, `update  
+  d_at`, `created_at`) values (Gabriel Bejarano, SeeDGabo@gmail.com, yrhqNd5d  
+  antu8DQhm4hqQOESIVEq0zq74xMvM1/s8rlzdDqmCTELm, [1,2,3], 1, 0, 2016-03-01 19  
+  :22:42, 2016-03-01 19:22:42))                                                
+                                                                               
+
+                                                                               
+  [PDOException]                                                               
+  SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'SeeD  
+  Gabo@gmail.com' for key 'users_email_unique'                                 
+                                                                               
+

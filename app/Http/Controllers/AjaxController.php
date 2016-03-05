@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Carritos;
+use App\Dbf;
 use App\Funciones;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
@@ -99,6 +100,19 @@ class AjaxController extends Controller
             return  redirect('/carrito');
     }
 
+    public function addCliente (Request $request)
+    {
+        $cliente = (new Dbf(Funciones::getPathCli()))->one(1);
+        $keys =array_keys($cliente);
+        foreach ($keys as $key) 
+        {
+            $array[$key] = $request->input($key," "); 
+        }
+        $pos = (new Dbf(Funciones::getPathCli()))->insert($array);
+        Flash::success("Cliente Agregado exitosamente");
+        return back();
+    }
+
     public function setEstadoTicket(Request $request, $id)
     {
         $ticket = Tickets::find($id);
@@ -109,8 +123,24 @@ class AjaxController extends Controller
 
     public function addComentarioTicket(Request $request)
     {
-        $comentario = \App\Models\ComentariosTickets::create($request->all());
-        return $comentario;
+        $comentario = \App\Models\ComentariosTickets::create($request->input('comentario'));
+        Flash::success("Comentario Agregado exitosamente");
+        if($request->hasFile('archivo'))
+        {   
+            $nombre = $comentario->id  . "." . $request->file("archivo")->getClientOriginalExtension();
+            $request->file('archivo')->move(public_path("archivos/ComentariosTickets/"), $nombre );
+            $comentario->archivo =  $request->file("archivo")->getClientOriginalName();
+            $comentario->save();
+        }
+        if($request->exists('notificacion'))
+        {
+            \App\Funciones::sendMailNewComentario($request->input('emails'), $comentario);
+        }
+
+        if($request->ajax())
+            return $comentario;
+        else
+            return  back();
     }
 
     public function deleteComentarioTicket(Request $request,$id)

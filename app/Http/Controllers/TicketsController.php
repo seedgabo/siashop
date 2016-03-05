@@ -72,7 +72,7 @@ class TicketsController extends AppBaseController
         Funciones::sendMailNewTicket($tickets, \App\User::find($tickets->user_id), \App\User::find($tickets->guardian_id));
         Flash::success('Tickets guardado correctamente.');
 
-        return redirect(route('tickets.index'));
+        return back();
     }
 
     /**
@@ -144,7 +144,7 @@ class TicketsController extends AppBaseController
 
         Flash::success('Tickets guardado correctamente.');
 
-        return redirect(route('tickets.index'));
+        return back();
     }
 
     /**

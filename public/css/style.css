@@ -18,3 +18,7 @@
 	border-width: 1px !important;
 	border-color: gray !important;
 }
+table.table
+{
+	background-color: white;
+}

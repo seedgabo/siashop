@@ -7,7 +7,7 @@
 <!--- Contenido Field --->
 <div class="form-group col-sm-12 col-lg-12">
     {!! Form::label('contenido', 'Contenido:') !!}
-    {!! Form::textarea('contenido', null, ['class' => 'form-control']) !!}
+    {!! Form::textarea('contenido', null, ['class' => 'form-control', 'id' => 'textarea']) !!}
 </div>
 
 <!--- User Id Field --->
@@ -43,7 +43,7 @@
 <!--- vencimiento Field --->
 <div class="form-group col-sm-6">
     {!! Form::label('vencimiento', 'Vence el:') !!}
-    {!! Form::date('vencimiento',null, ['class' => 'form-control datetimepicker']) !!}
+    {!! Form::text('vencimiento',null, ['class' => 'form-control datetimepicker']) !!}
 </div>
 
 <!-- Transferible Field --->

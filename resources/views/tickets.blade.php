@@ -24,6 +24,7 @@
 					<th>contenido</th>
 					<th>Usuario</th>
 					<th>Asignado a</th>
+					<th>Creado el</th>
 					<th>Vence el</th>
 				</tr>
 			</thead>
@@ -31,7 +32,10 @@
 			 @forelse ($tickets as $ticket)
 				<tr class="@if($ticket->estado == "completado") success @endif @if($ticket->estado == "rechazado") danger @endif @if($ticket->estado == "en curso") info @endif @if($ticket->estado == "abierto") warning @endif">
 					<td>
-						<a class="btn btn-link" style="text-transform: uppercase;" href="{{url("ticket/ver/".$ticket->id)}}"> {{$ticket->titulo}}</a>
+						<a class="btn btn-link" style="text-transform: uppercase;" href="{{url("ticket/ver/".$ticket->id)}}"> 
+						{{$ticket->titulo}}
+						<span class="badge label-success">{{App\Models\ComentariosTickets::where("ticket_id",$ticket->id)->count()}}</span>
+						</a>
 						@if ($ticket->user_id == Auth::user()->id)
 							<a class="btn pull-right btn-xs btn-danger" onclick="return confirm('esta seguro de que desea eliminar este ticket?')" href="{{url("ticket/eliminar/".$ticket->id)}}"> <i class="fa fa-trash"></i></a>
 						@endif
@@ -41,7 +45,8 @@
 					<td>{{str_limit($ticket->contenido,100)}}</td>
 					<td>{{ \App\User::find($ticket->user_id)->nombre}}</td>
 					<td>{{ \App\User::find($ticket->guardian_id)->nombre}}</td>
-					<td>{{ \App\Funciones::transdate($ticket->vencimiento->format('l j \d\e F \d\e Y h:i:s A'))}}</td>
+					<td>{{ App\Funciones::transdate($ticket->created_at)}}</td>
+					<td>{{ \App\Funciones::transdate($ticket->vencimiento)}}</td>
 				</tr>
 			 @empty
 			 	Ningún ticket existente
@@ -51,7 +56,7 @@
 	</div>
 
 	<div class="modal fade" id="modal-ticket">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -71,7 +76,7 @@
 
 				    <div class="form-group @if($errors->first('contenido')) has-error @endif">
 				        {!! Form::label('contenido', 'Contenido') !!}
-				        {!! Form::textarea('contenido', null, ['class' => 'form-control', 'required' => 'required']) !!}
+				        {!! Form::textarea('contenido', null, ['class' => 'form-control', 'required' => 'required', 'id' =>'textarea']) !!}
 				        <small class="text-danger">{{ $errors->first('contenido') }}</small>
 				    </div>
 
@@ -96,8 +101,8 @@
 				    </div>
 
 				    <div class="form-group @if($errors->first('vencimiento')) has-error @endif">
-				        {!! Form::label('vencimiento', 'Fecha de Expiracón') !!}
-				        {!! Form::date('vencimiento', null, ['class' => 'form-control datetimepicker', 'required' => 'required']) !!}
+				        {!! Form::label('vencimiento', 'Fecha de Expiración') !!}
+				        {!! Form::text('vencimiento', null, ['class' => 'form-control datetimepicker', 'required' => 'required']) !!}
 				        <small class="text-danger">{{ $errors->first('vencimiento') }}</small>
 				    </div>
 
@@ -123,18 +128,6 @@
 
 	<script>
 		$(document).ready(function() { 
-				$('#nuevoTicket').ajaxForm(function(data) {
-					$.toast({
-		            		heading: 'Hecho',
-		            		text: data,
-		            		showHideTransition: 'slide',
-		            		icon: 'success',
-		            		position: 'mid-center',
-		            	})
-					$("textarea").html();
-					$("textarea").val();
-					location.reload(); 
-				});
 				$('#modal-ticket').on('shown.bs.modal', function () {
 				  $('.chosen').chosen('destroy').chosen();
 				});
