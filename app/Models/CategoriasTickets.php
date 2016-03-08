@@ -6,33 +6,6 @@ use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * @SWG\Definition(
- *      definition="CategoriasTickets",
- *      required={nombre, descripción, user_id},
- *      @SWG\Property(
- *          property="id",
- *          description="id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="nombre",
- *          description="nombre",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="descripción",
- *          description="descripción",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="user_id",
- *          description="user_id",
- *          type="string"
- *      )
- * )
- */
 class CategoriasTickets extends Model
 {
     use SoftDeletes;
@@ -48,11 +21,7 @@ class CategoriasTickets extends Model
 		"user_id"
     ];
 
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
+   
 
     public static function byUser($user = null)
     {
@@ -67,6 +36,11 @@ class CategoriasTickets extends Model
              $permitidas[] =  $categoria;
          } 
         return collect($permitidas);
+    }
+    
+    public function  Users()
+    {
+        return \App\User::wherein("id",$this->user_id)->get();
     }
 
     protected $casts = [
@@ -85,4 +59,12 @@ class CategoriasTickets extends Model
 		"descripción" => "required|min:3",
 		"user_id" => "required"
     ];
+
+      public function Tickets()
+    {
+        return $this->hasMany('App\Models\Tickets',"categoria_id");
+    }
+
+
+
 }

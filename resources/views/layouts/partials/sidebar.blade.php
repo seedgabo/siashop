@@ -19,7 +19,10 @@
     
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
-            <li class="header text-center"><a href="{{url('menu')}}">MENU</a></li>
+             <li><a href="{{ url('menu') }}">
+                <i class='fa fa-home'></i> 
+                <span>Menu</span>
+            </a></li>
             <!-- Optionally, you can add icons to the links -->
             <li><a href="{{ url('home') }}">
                 <i class='fa fa-building'></i> 
@@ -31,6 +34,18 @@
                 (@if (Session::has('cliente')){{ \App\Funciones::getCliente()['NOM_TER'] }}@endif)
                 </span>
             </a></li>
+            @if (Session::has('cliente'))
+            <li><a href="{{ url('catalogo') }}">
+                <i class='fa fa-credit-card'></i> 
+                <span>Catalogo</span>
+            </a></li>
+            @endif
+             @if (Session::has('cliente'))
+            <li><a href="{{ url('carrito') }}">
+                <i class='fa fa-shopping-cart'></i> 
+                <span>Carrito </span>
+            </a></li>
+            @endif
             <li class="treeview">
                 <a href="#"><i class='fa fa-ticket'></i> <span>Tickets</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">

@@ -4,7 +4,7 @@ use App\Funciones;
 
 
 
-  	Route::any('/', function(){return redirect('/login');});
+Route::any('/', function(){return redirect('/login');});
 Route::group(['middleware' => 'web'], function () {
 	Route::auth();
   	Route::get('/home', 'HomeController@index');
@@ -20,19 +20,21 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('ticket/eliminar/{id}', ['middleware' => ['EmpresaSet'], 'uses' =>'HomeController@ticketEliminar']);
 	
 	Route::group(['prefix' => 'ajax'], function() {
-			Route::any('/setEmpresa/{empresa}','AjaxController@setEmpresa');
-			Route::any('/setCliente/{cliente}','AjaxController@setCliente');
-			Route::any('/addCarrito','AjaxController@addCarrito');
-			Route::any('/eliminarCarrito/{id}','AjaxController@deleteCarrito');
-			Route::any('/eliminarCarrito','AjaxController@clearCarrito');
-			Route::any('/procesarCarrito' , 'AjaxController@ProcesarCarrito');
-			Route::any('/setEstadoTicket/{id}' , 'AjaxController@setEstadoTicket');
-			Route::any('/addComentarioTicket' , 'AjaxController@addComentarioTicket');
-			Route::any('/deleteComentarioTicket/{id}' , 'AjaxController@deleteComentarioTicket');
+		Route::any('/setEmpresa/{empresa}','AjaxController@setEmpresa');
+		Route::any('/setCliente/{cliente}','AjaxController@setCliente');
+		Route::any('/addCarrito','AjaxController@addCarrito');
+		Route::any('/eliminarCarrito/{id}','AjaxController@deleteCarrito');
+		Route::any('/eliminarCarrito','AjaxController@clearCarrito');
+		Route::any('/procesarCarrito' , 'AjaxController@ProcesarCarrito');
+		Route::any('/addCliente' , 'AjaxController@addCliente');
+		Route::any('/setEstadoTicket/{id}' , 'AjaxController@setEstadoTicket');
+		Route::any('/setGuardianTicket/{id}' , 'AjaxController@setGuardianTicket');
+		Route::any('/addComentarioTicket' , 'AjaxController@addComentarioTicket');
+		Route::any('/deleteComentarioTicket/{id}' , 'AjaxController@deleteComentarioTicket');
 	});
 
 
-	Route::group(['middleware' =>'isAdmin'], function() {
+	Route::group(['middleware' =>['auth','isAdmin']], function() {
 		Route::resource('Empresa', 'EmpresaController');
 		Route::any('Empresa/delete/{id}', [
 			'as' => 'usuario.delete',
@@ -56,6 +58,16 @@ Route::group(['middleware' => 'web'], function () {
 		    'as' => 'categoriasTickets.delete',
 		    'uses' => 'CategoriasTicketsController@destroy',
 		]);
+	});
+
+	Route::any('input', function()
+	{
+		return Illuminate\Support\Facades\Input::all();
+	});
+
+	Route::any('test', function()
+	{
+		return App\Models\CategoriasTickets::find(2)->users();
 	});
 
 });

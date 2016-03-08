@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('content')
+<link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/js/fileinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/js/fileinput_locale_es.min.js"></script>
 	<div class="container">
 	<div class="text-center">
 		<ol class="breadcrumb">
@@ -14,6 +17,7 @@
 	</div>
 	<div class="text-right">
 		<a class="btn btn-primary" data-toggle="modal" href='#modal-ticket'><i class="fa fa-plus"></i> Crear un ticket</a>
+		<hr>
 	</div>
 		<table class="table table-hover table-bordered">
 			<thead>
@@ -24,6 +28,7 @@
 					<th>contenido</th>
 					<th>Usuario</th>
 					<th>Asignado a</th>
+					<th>Creado el</th>
 					<th>Vence el</th>
 				</tr>
 			</thead>
@@ -31,17 +36,21 @@
 			 @forelse ($tickets as $ticket)
 				<tr class="@if($ticket->estado == "completado") success @endif @if($ticket->estado == "rechazado") danger @endif @if($ticket->estado == "en curso") info @endif @if($ticket->estado == "abierto") warning @endif">
 					<td>
-						<a class="btn btn-link" style="text-transform: uppercase;" href="{{url("ticket/ver/".$ticket->id)}}"> {{$ticket->titulo}}</a>
+						<a class="btn btn-link" style="text-transform: uppercase;" href="{{url("ticket/ver/".$ticket->id)}}"> 
+						{{$ticket->titulo}}
+						<span class="badge label-success">{{App\Models\ComentariosTickets::where("ticket_id",$ticket->id)->count()}}</span>
+						</a>
 						@if ($ticket->user_id == Auth::user()->id)
 							<a class="btn pull-right btn-xs btn-danger" onclick="return confirm('esta seguro de que desea eliminar este ticket?')" href="{{url("ticket/eliminar/".$ticket->id)}}"> <i class="fa fa-trash"></i></a>
 						@endif
 					</td>
 					<td>{{\App\Models\categoriasTickets::find($ticket->categoria_id)->nombre}}</td>
 					<td>{{$ticket->estado}}</td>
-					<td>{{str_limit($ticket->contenido,100)}}</td>
+					<td>{!! str_limit($ticket->contenido,100) !!}</td>
 					<td>{{ \App\User::find($ticket->user_id)->nombre}}</td>
 					<td>{{ \App\User::find($ticket->guardian_id)->nombre}}</td>
-					<td>{{ \App\Funciones::transdate($ticket->vencimiento->format('l j \d\e F \d\e Y h:i:s A'))}}</td>
+					<td>{{ App\Funciones::transdate($ticket->created_at)}}</td>
+					<td>{{ \App\Funciones::transdate($ticket->vencimiento)}}</td>
 				</tr>
 			 @empty
 			 	Ningún ticket existente
@@ -51,7 +60,7 @@
 	</div>
 
 	<div class="modal fade" id="modal-ticket">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -71,13 +80,13 @@
 
 				    <div class="form-group @if($errors->first('contenido')) has-error @endif">
 				        {!! Form::label('contenido', 'Contenido') !!}
-				        {!! Form::textarea('contenido', null, ['class' => 'form-control', 'required' => 'required']) !!}
+				        {!! Form::textarea('contenido', null, ['class' => 'form-control', 'required' => 'required', 'id' =>'textarea']) !!}
 				        <small class="text-danger">{{ $errors->first('contenido') }}</small>
 				    </div>
 
 				    <div class="form-group @if($errors->first('categoria_id')) has-error @endif">
 				        {!! Form::label('categoria_id', 'Categoria') !!}
-				        {!! Form::select('categoria_id',\App\Models\CategoriasTickets::byuser()->lists("nombre","id"), null, ['id' => 'categoria', 'class' => 'form-control', 'required' => 'required']) !!}
+				        {!! Form::select('categoria_id',\App\Models\CategoriasTickets::byuser()->lists("nombre","id"), null, ['id' => 'categoria', 'class' => 'form-control chosen', 'required' => 'required']) !!}
 				        <small class="text-danger">{{ $errors->first('categoria_id') }}</small>
 				    </div>
 
@@ -96,14 +105,14 @@
 				    </div>
 
 				    <div class="form-group @if($errors->first('vencimiento')) has-error @endif">
-				        {!! Form::label('vencimiento', 'Fecha de Expiracón') !!}
-				        {!! Form::date('vencimiento', null, ['class' => 'form-control datetimepicker', 'required' => 'required']) !!}
+				        {!! Form::label('vencimiento', 'Fecha de Expiración') !!}
+				        {!! Form::text('vencimiento', null, ['class' => 'form-control datetimepicker', 'required' => 'required']) !!}
 				        <small class="text-danger">{{ $errors->first('vencimiento') }}</small>
 				    </div>
 
 				    <div class="form-group @if($errors->first('archivo')) has-error @endif">
 				        {!! Form::label('archivo', 'Archivo') !!}
-				        {!! Form::file('archivo', []) !!}
+				        {!! Form::file('archivo', ["class" => "file-bootstrap"]) !!}
 				        <p class="help-block">El archivo debe pesar menos de 10Mb, solo documentos, imagenes y archivos comprimidos estan permitidos</p>
 				        <small class="text-danger">{{ $errors->first('archivo') }}</small>
 				    </div>
@@ -123,21 +132,21 @@
 
 	<script>
 		$(document).ready(function() { 
-				$('#nuevoTicket').ajaxForm(function(data) {
-					$.toast({
-		            		heading: 'Hecho',
-		            		text: data,
-		            		showHideTransition: 'slide',
-		            		icon: 'success',
-		            		position: 'mid-center',
-		            	})
-					$("textarea").html();
-					$("textarea").val();
-					location.reload(); 
-				});
-				$('#modal-ticket').on('shown.bs.modal', function () {
-				  $('.chosen').chosen('destroy').chosen();
-				});
+			$('#modal-ticket').on('shown.bs.modal', function () {
+			  $('.chosen').chosen('destroy').chosen();
+			});
+			$(".file-bootstrap").fileinput({
+		        maxFileSize: 10000,
+				showUpload: false,
+		        browseClass: "btn btn-success",
+		        browseLabel: "Agregar",
+		        browseIcon: "<i class=\"glyphicon glyphicon-upload\"></i> ",
+		        removeClass: "btn btn-danger",
+		        removeLabel: "",
+		        removeIcon: "<i class=\"glyphicon glyphicon-trash\"></i> ",
+		        uploadClass: "btn btn-info",
+			});
+
 		});
 	</script>
 @stop

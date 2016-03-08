@@ -4,42 +4,6 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-/**
- * @SWG\Definition(
- *      definition="ComentariosTickets",
- *      required={texto, user_id},
- *      @SWG\Property(
- *          property="id",
- *          description="id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="texto",
- *          description="texto",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="user_id",
- *          description="user_id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="created_at",
- *          description="created_at",
- *          type="string",
- *          format="date-time"
- *      ),
- *      @SWG\Property(
- *          property="updated_at",
- *          description="updated_at",
- *          type="string",
- *          format="date-time"
- *      )
- * )
- */
 class ComentariosTickets extends Model
 {
     use SoftDeletes;
@@ -52,28 +16,25 @@ class ComentariosTickets extends Model
     public $fillable = [
         "texto",
 		"user_id",
-        "ticket_id"
+        "ticket_id",
+        "archivo"
     ];
-
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         "texto" => "string",
 		"user_id" => "integer",
-        "ticket_id" => "integer"
+        "ticket_id" => "integer",
+        "archivo" => "string"
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
     public static $rules = [
         "texto" => "required|min:8",
 		"user_id" => "required",
-        "ticket_id" => "required"
+        "ticket_id" => "required",
+        "archivo"  => "image|max:20000"
     ];
+
+    public function archivo()    
+    {
+        return  asset("archivos/ComentariosTickets/" . $this->id . "." . explode(".",$this->archivo)[1]);
+    }
 }

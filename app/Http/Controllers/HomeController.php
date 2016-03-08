@@ -100,6 +100,10 @@ class HomeController extends Controller
     public function ticketVer(Request $request, $id)
     {
         $ticket= Tickets::find($id);
+        if(!in_array(Auth::user()->id , $ticket->categoria->user_id))
+        {
+            return view("errors/401");
+        }
         $comentarios = ComentariosTickets::where("ticket_id",$ticket->id)
         ->orderBy("created_at")
         ->get();

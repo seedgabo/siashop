@@ -44,7 +44,7 @@ class UsuarioController extends Controller
         $usuario->password = Hash::make($request->input('cod_vendedor'));
         $usuario->save();
         \App\Funciones::sendMailUser($usuario);
-        Flash::succes('Usuario Creado');
+        Flash::success('Usuario Creado');
         return redirect('Usuarios');
     }
 

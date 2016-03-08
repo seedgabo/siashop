@@ -5,6 +5,8 @@
 	    -ms-transition: all .5s ease-in-out;
 	     -o-transition: all .5s ease-in-out;
 	        transition: all .5s ease-in-out;
+	border-color: #A5ABFF;
+	border-width: 1px;
 }
 .hover:hover
 {
@@ -17,4 +19,8 @@
 	border-style: dashed !important;
 	border-width: 1px !important;
 	border-color: gray !important;
+}
+table.table
+{
+	background-color: white;
 }
