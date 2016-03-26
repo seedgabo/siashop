@@ -72,25 +72,11 @@ Route::group(['middleware' => 'web'], function () {
 	   Route::any('/cargarImagenes/{id}', ['uses' =>'UploadController@cargarImagenes']);
 	});
 
-	Route::any('input', function()
-	{
-		return Input::all();
-	});
-
-	Route::any('test', function()
-	{
-		return \App\Funciones::getUrlProfile(Auth::user());
-	});
 
 	Route::post('tickets/', [
 		    'as' => 'tickets.store',
 		    'uses' => 'TicketsController@store',
 		]);
 
-
-	Route::any('test', function()
-	{
-		return Illuminate\Support\Facades\Input::all();
-	});
 
 });
