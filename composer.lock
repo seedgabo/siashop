@@ -2558,8 +2558,13 @@
             },
             "dist": {
                 "type": "zip",
+<<<<<<< HEAD
                 "url": "https://api.github.com/repos/InfyOmLabs/core-templates/zipball/4e5f24778de87d2b7461eea3e316bbe17ddb1790",
                 "reference": "4e5f24778de87d2b7461eea3e316bbe17ddb1790",
+=======
+                "url": "https://api.github.com/repos/InfyOmLabs/core-templates/zipball/180e0e4c7311d74204db089f4d84be86724b9cce",
+                "reference": "c5b35ed442efebc86574d137aa7886cc6b2d120e",
+>>>>>>> origin/master
                 "shasum": ""
             },
             "require": {

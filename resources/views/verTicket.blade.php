@@ -74,12 +74,12 @@
 				No hay comentarios <br><strong>Agrega el primero</strong>
 			@endforelse
 		</div>
-		
+
 		{!! Form::open(['method' => 'POST', 'url' => 'ajax/addComentarioTicket', 'class' => 'form-horizontal', 'id' => 'form-comentario', "files" => "true"]) !!}
 			<input type="hidden" name="comentario[ticket_id]" value="{{$ticket->id}}">
 			<input type="hidden" name="comentario[user_id]" value="{{Auth::user()->id}}">
 			<textarea rows="6" required="required" minlength="8" class="form-control" name="comentario[texto]" placeholder="Agrega aqui algun aporte para el ticket"></textarea>
-				
+
 				<button type="button" onclick="masOpciones();" class="btn btn-xs">Mas Opciones</button>
 			<div id="input-avanced" style="display:none">
 
@@ -111,18 +111,18 @@
 				</div>
 
 			</div>
-	
+
 
 			<br>
 			<div class="text-right">
-	        	{!! Form::submit("Enviar", ['class' => 'btn btn-success']) !!}		
+	        	{!! Form::submit("Enviar", ['class' => 'btn btn-success']) !!}
 			</div>
 		{!! Form::close() !!}
 	</div>
 	<script>
 		function cambiarEstado(id, estado)
 		{
-			$.post("{{url('ajax/setEstadoTicket/')}}" +"/" + id, {estado: estado}, 
+			$.post("{{url('ajax/setEstadoTicket/')}}" +"/" + id, {estado: estado},
 			function(data)
 			{
 				$.toast({
@@ -138,26 +138,26 @@
 
 		function cambiarGuardian(id, guardian_id)
 		{
-			$.post("{{url('ajax/setGuardianTicket/')}}" +"/" + id, {guardian_id: guardian_id}, 
+			$.post("{{url('ajax/setGuardianTicket/')}}" +"/" + id, {guardian_id: guardian_id},
 				function(data)
 				{
 					$.toast({
 	            		heading: 'Hecho',
 	            		text: "Guardian Transferido",
 	            		showHideTransition: 'slide',
-	            		icon: 'success',
+	            		icon: 'info',
 	            		position: 'mid-center',
     			});
     		})
 		}
-		
+
 		function masOpciones()
 		{
 			$('#input-avanced').fadeToggle('slow');
 			$('.chosen').chosen('destroy').chosen();
 		}
-		
-		$(document).ready(function() { 
+
+		$(document).ready(function() {
 			$('#form-comentario').submit(function(event) {
 				$.toast({
 	            		heading: '<h3 class="text-center">Enviando Comentario <br> <i class="fa fa-spinner fa-pulse"></i></h3>',

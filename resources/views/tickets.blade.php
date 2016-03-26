@@ -37,7 +37,7 @@
 			 @forelse ($tickets as $ticket)
 				<tr class="@if($ticket->estado == "completado") success @endif @if($ticket->estado == "rechazado") danger @endif @if($ticket->estado == "en curso") info @endif @if($ticket->estado == "abierto") warning @endif">
 					<td>
-						<a class="btn btn-link" style="text-transform: uppercase;" href="{{url("ticket/ver/".$ticket->id)}}"> 
+						<a class="btn btn-link" style="text-transform: uppercase;" href="{{url("ticket/ver/".$ticket->id)}}">
 						{{$ticket->titulo}}
 						<span class="badge label-success">{{App\Models\ComentariosTickets::where("ticket_id",$ticket->id)->count()}}</span>
 						</a>
@@ -82,7 +82,7 @@
 				</div>
 				<div class="modal-body">
 				<div class="row">
-					
+
 				{!! Form::open(['method' => 'POST', 'route' => 'tickets.store', 'class' => 'form-horizontal col-md-10 col-md-offset-1' ,'id' => 'nuevoTicket', 'files'=>true]) !!}
 					<input type="hidden" name="user_id" value="{{Auth::user()->id}}">
 					<input type="hidden" name="estado" value="abierto">
@@ -130,10 +130,10 @@
 				        <p class="help-block">El archivo debe pesar menos de 10Mb, solo documentos, imagenes y archivos comprimidos estan permitidos</p>
 				        <small class="text-danger">{{ $errors->first('archivo') }}</small>
 				    </div>
-				
-				
+
+
 				{!! Form::close() !!}
-					
+
 				</div>
 				</div>
 				<div class="modal-footer">
@@ -145,7 +145,7 @@
 	</div>
 
 	<script>
-		$(document).ready(function() { 
+		$(document).ready(function() {
 			$('#modal-ticket').on('shown.bs.modal', function () {
 			  $('.chosen').chosen('destroy').chosen();
 			});

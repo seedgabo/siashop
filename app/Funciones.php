@@ -122,7 +122,7 @@ class Funciones
         //     var_dump($fila);
         //     $pos[] = $pedidos->insert($fila);
         // }
-        
+
         foreach ($productos as $producto) {
             $producto->num_ped = $num_ped;
             $producto->estado  =  1;
@@ -218,7 +218,7 @@ class Funciones
 
     /**
      * Obtiene la url hacia la imagen de perfil del usuario seleccionado
-     * @param  USer $user Usuario a buscar la imagen 
+     * @param  USer $user Usuario a buscar la imagen
      * @return String       Url con ladirección de la imagen, de no tener se devolvera un valor default
      */
     public static function getUrlProfile( $user = null)

@@ -24,9 +24,9 @@ Route::group(['middleware' => 'web'], function () {
 		Route::get('/mis-tickets',   ['middleware' => ['EmpresaSet'], 'uses' =>'HomeController@misTickets']);
 		Route::get('/tickets/todos',   ['middleware' => ['EmpresaSet'], 'uses' =>'HomeController@Todostickets']);
 		Route::get('/ticket/ver/{id}',   ['middleware' => ['EmpresaSet'], 'uses' =>'HomeController@ticketVer']);
-		Route::get('ticket/eliminar/{id}', ['middleware' => ['EmpresaSet'], 'uses' =>'HomeController@ticketEliminar']);	
+		Route::get('ticket/eliminar/{id}', ['middleware' => ['EmpresaSet'], 'uses' =>'HomeController@ticketEliminar']);
 	});
-	
+
 	Route::group(['prefix' => 'ajax'], function() {
 		Route::any('/setEmpresa/{empresa}','AjaxController@setEmpresa');
 		Route::any('/setCliente/{cliente}','AjaxController@setCliente');
@@ -36,10 +36,11 @@ Route::group(['middleware' => 'web'], function () {
 		Route::any('/procesarCarrito' , 'AjaxController@ProcesarCarrito');
 		Route::any('/addCliente' , 'AjaxController@addCliente');
 		Route::any('/setEstadoTicket/{id}' , 'AjaxController@setEstadoTicket');
-		Route::any('/setGuardianTicket/{id}' , 'AjaxController@setGuardianTicket');
 		Route::any('/addComentarioTicket' , 'AjaxController@addComentarioTicket');
 		Route::any('/deleteComentarioTicket/{id}' , 'AjaxController@deleteComentarioTicket');
+		Route::any('/setGuardianTicket/{id}' , 'AjaxController@setGuardianTicket');
 	});
+
 
 	Route::group(['middleware' =>['auth','isAdmin']], function() {
 		Route::resource('Empresa', 'EmpresaController');
@@ -53,7 +54,7 @@ Route::group(['middleware' => 'web'], function () {
 			'as' => 'usuario.delete',
 			'uses' => 'UsuarioController@destroy'
 			]);
-		
+
 		Route::resource("tickets", "TicketsController");
 		Route::get('tickets/delete/{id}', [
 		    'as' => 'tickets.delete',
@@ -87,9 +88,9 @@ Route::group(['middleware' => 'web'], function () {
 		]);
 
 
+	Route::any('test', function()
+	{
+		return Illuminate\Support\Facades\Input::all();
+	});
+
 });
-
-
-
-
-
