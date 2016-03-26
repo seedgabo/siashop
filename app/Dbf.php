@@ -6,9 +6,25 @@ use Illuminate\Support\Facades\Input;
 
 class Dbf 
 {
-	public $path;
+	/**
+	 * path hacia la base de datos
+	 * @var String
+	 */
+	public  $path;
+	/**
+	 * Array con los filtros para busqueda, la clave sera la clave a evaluar en la fila y el valor , lo que deb coincidir
+	 * @var array
+	 */
 	public $where = array('deleted' => '0');
+	/**
+	 * Valores a devolver
+	 * @var array
+	 */
 	public $data = array();
+	/**
+	 * Html con la paginación compatible con Bootstrap Css, debe ser inicializada con el metodo Paginate()
+	 * @var string
+	 */
 	public $paginator = "";
 
 
@@ -22,7 +38,10 @@ class Dbf
 		}
 	}
 
-	//Obtiene todos los registros que coincidan con el array where
+	/**
+	 * Obtiene todos los registros que coincidan con el array where
+	 * @return Collection Array de objetos con todos los valores encontrados
+	 */
 	public function get()
 	{
 		$db = dbase_open($this->path, 0);
@@ -41,7 +60,11 @@ class Dbf
 	}
 
 
-	//Extrae la fila  en la posicion  de la base de datos
+	/**
+	 * Extrae la fila  en la posicion  de la base de datos
+	 * @param  Integer $pos Posición que se desea obtener en la base de datos
+	 * @return Array      Array con los valores buscados
+	 */
 	public function one($pos)
 	{
 		$db = dbase_open($this->path, 0);
@@ -55,7 +78,10 @@ class Dbf
 		return  $fila;
 	}
 
-	// Extrae la primera fila que cumpla las condiciones asignadas en el array Where
+	/**
+	 * OBtiene el primer valo que coincida con la busqueda
+	 * @return Array Array con el valor encontrado, devuelve null si no coincide ninguno
+	 */
 	public function first()
 	{
 		$db = dbase_open($this->path, 0);
@@ -75,7 +101,11 @@ class Dbf
 	}
 
 
-    // Funcion para insertar en la base de datos devuelve la pos del registro insertado
+    /**
+     * Funcion para insertar en la base de datos
+     * @param  [type] $fila Array a insertar el numero de objetos debe coincidir en la base de datos sin la clave "deleted"
+     * @return Integer    Posición en la base de datos del parametro insertado
+     */
 	public function insert($fila)
 	{
 		if (isset($fila['deleted']))
@@ -91,7 +121,11 @@ class Dbf
 	}
 
 
-	// Funcion que permite traer de manera paginada los resultados de la tabla utilizando la variable get "P"
+	/**
+	 * Funcion que permite traer de manera paginada los resultados de la tabla utilizando la variable get "P"
+	 * @param  Integer $take Cantidad de datos a traer por pagina
+	 * @return Collecion   Valores paginados en la pagina actual segun la variable get "P"
+	 */
 	public function paginate($take)
 	{
 		$data = $this->get();
@@ -100,10 +134,12 @@ class Dbf
 	}
 
 
-
-
-
-	// Agrega un valor al array where para buscar
+	/**
+	 * Agrega un valor al array where para validar en la busqueda
+	 * @param  String $key   Clave a validar en el Array
+	 * @param  String $value Valor en el array que debe ser coincidente para ser valido
+	 * @return Dbf        Instancia misma
+	 */
 	public function where ($key,$value)
 	{
 		$this->where = array_add($this->where , $key, $value);
@@ -111,7 +147,11 @@ class Dbf
 	}
 
 
-	//Recorre el vector where para ver si la fila cumple las condiciones
+	/**
+	 * Valida una fila segun los parametros introducidos en las condiciones en el arra Where
+	 * @param  Array $fila [El array a Examinar]
+	 * @return Boolean       True si el array paso la valicación
+	 */
 	private function validar($fila)
 	{
 		foreach ($this->where as $clave => $valor) {
@@ -122,6 +162,10 @@ class Dbf
 		return true;
 	}
 
+	/**
+	 * Devuelve un html con la paginación 
+	 * @return String Html con la paginación compatible con Bootstrap
+	 */
 	public function links()
 	{
 		$pagina = Input::get('p', 0);

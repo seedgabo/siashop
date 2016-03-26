@@ -5,13 +5,15 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Carritos extends Model
 {
-       protected $table = 'carritos';
+    use SoftDeletes;
+    protected $table = 'carritos';
+    protected $dates = ['deleted_at'];
 
-    
-       protected $fillable = [
+    protected $fillable = [
         'NOM_REF','user_id','empresa_id','transaccion','estado','COD_REF','cantidad','VAL_REF', 'nombre_cliente','COD_CLI'
     ];
 

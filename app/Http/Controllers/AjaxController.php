@@ -27,7 +27,7 @@ class AjaxController extends Controller
             {
                 Flash::success('Empresa Seleccionada');
                 $request->session()->flash('success', "Empresa Seleccionada");
-                return redirect('/menu');
+                return redirect()->intended('menu');
             }
         }
         else
@@ -46,7 +46,7 @@ class AjaxController extends Controller
         else
         {
             Flash::success('Cliente Seleccionado');
-            return redirect('menu');
+             return redirect()->intended('catalogo');
         }
     }
 
@@ -87,6 +87,7 @@ class AjaxController extends Controller
     {   
         $productos = Carritos::where('user_id',Auth::user()->id)
         ->where('COD_CLI',$request->session()->get('cliente'))
+        ->where("estado", "0")
         ->get();
         Funciones::procesarCarrito($productos);
         $empresa = Funciones::getEmpresa();

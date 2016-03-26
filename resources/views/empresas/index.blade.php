@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h4>Seleccione la Empresa: </h4>
+        <h4>Seleccione la Empresa a administrar: </h4>
         <div class="list-group col-md-6 col-md-offset-3">
         @forelse ($empresas as $empresa)
           <a class="list-group-item text-center" href="{{url('Empresa/'. $empresa->id)}}"> 

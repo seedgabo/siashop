@@ -8,16 +8,16 @@ class Empresas extends Model
 {
     protected $table = 'empresas';
 
-    
-       protected $fillable = 
+
+       protected $fillable =
        [
         'nombre', 'direccion_base_de_datos','emails','direccion_tabla_clientes','num_ped'
     	];
 
 
-      protected $casts = 
+      protected $casts =
       [
         'emails' => 'array',
     	];
-  
+       
 }

@@ -8,20 +8,19 @@ use Illuminate\Support\Facades\Auth;
 
 class CategoriasTickets extends Model
 {
-    use SoftDeletes;
 
     public $table = "categorias_tickets";
-    
+
 	protected $dates = ['deleted_at'];
 
-    
+
     public $fillable = [
-        "nombre",
+    "nombre",
 		"descripción",
 		"user_id"
     ];
 
-   
+
 
     public static function byUser($user = null)
     {
@@ -34,10 +33,10 @@ class CategoriasTickets extends Model
         foreach ($categorias as $categoria) {
              if (in_array($user->id  ,$categoria->user_id))
              $permitidas[] =  $categoria;
-         } 
+         }
         return collect($permitidas);
     }
-    
+
     public function  Users()
     {
         return \App\User::wherein("id",$this->user_id)->get();
@@ -64,7 +63,6 @@ class CategoriasTickets extends Model
     {
         return $this->hasMany('App\Models\Tickets',"categoria_id");
     }
-
 
 
 }

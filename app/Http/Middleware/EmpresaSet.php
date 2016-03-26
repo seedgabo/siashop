@@ -16,7 +16,9 @@ class EmpresaSet
     public function handle($request, Closure $next)
     {
         if ($request->session()->has('empresa'))
-            return $next($request);
+        {
+           return $next($request);
+        }
         else
         {
             $request->session()->flash('error', "Seleccione una Empresa Primero");

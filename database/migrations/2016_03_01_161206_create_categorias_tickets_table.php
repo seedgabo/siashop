@@ -16,7 +16,7 @@ class CreateCategoriasTicketsTable extends Migration
         Schema::create('categorias_tickets', function(Blueprint $table) {
             $table->increments('id');
 			$table->string('nombre');
-			$table->text('descripción');
+			$table->text('descripción')->nullable();
 			$table->string('user_id');
 			$table->timestamps();
 			$table->softDeletes();

@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->string('nombre');
             $table->string('email')->unique();
             $table->string('password', 60);
-            $table->string('empresas_id');
+            $table->string('empresas_id')->default("[1]");
             $table->boolean('admin')->default('0');
             $table->string('cod_vendedor',100)->unique();
             $table->rememberToken();

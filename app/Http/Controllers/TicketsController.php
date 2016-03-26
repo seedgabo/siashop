@@ -61,7 +61,9 @@ class TicketsController extends AppBaseController
     public function store(CreateTicketsRequest $request)
     {
         $input = $request->except("archivo");
-        $tickets = $this->ticketsRepository->create($input);
+        $tickets = \App\Models\Tickets::create($input);
+        $tickets->created_at = new \Carbon\Carbon();
+        $tickets->save();
         if($request->hasFile('archivo'))
         {   
             $nombre = $request->file("archivo")->getClientOriginalName();

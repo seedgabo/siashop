@@ -18,13 +18,13 @@ class CreateTicketsTable extends Migration
 			$table->string('titulo');
 			$table->text('contenido');
             $table->string('user_id');
-            $table->string('guardian_id');
+            $table->string('guardian_id')->nullable();
 			$table->enum('estado', ['abierto', 'completado', 'en curso', ' rechazado','atrasado','vencido']);
 			$table->string('categoria_id');
-			$table->string('archivo');
+			$table->string('archivo')->nullable();
             $table->boolean("transferible")->default(true);
-            $table->timestamp('vencimiento')->nullable();
-			$table->timestamps();
+            $table->string('vencimiento')->nullable();
+            $table->timestamps();
 			$table->softDeletes();
         });
     }

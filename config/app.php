@@ -166,6 +166,7 @@ return [
 
 
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
+        Chumper\Zipper\ZipperServiceProvider::class
 
     ],
 
@@ -219,6 +220,7 @@ return [
 
 
         'AdminLTE' => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
+        'Zipper' => Chumper\Zipper\Zipper::class
 
     ],
 

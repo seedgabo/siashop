@@ -17,11 +17,12 @@
     <link href="{{ asset('/css/AdminLTE.css') }}" rel="stylesheet" type="text/css" />
 
     <link href="{{ asset('/css/skins/skin-blue.css') }}" rel="stylesheet" type="text/css" />
-    <!-- iCheck -->
+    
     <link href="{{ asset('/css/style.css') }}" rel="stylesheet" type="text/css" />
     
     <!-- plugins -->
     <script src="{{ asset('/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+
     <!-- Jquery Toast -->
     <link href="{{ asset('/css/jquerytoast.min.css') }}" rel="stylesheet" type="text/css" />
     
@@ -42,51 +43,9 @@
     <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
     
     <!-- Datatable -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
-    <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
-    <script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/bs/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.11,b-1.1.2,b-colvis-1.1.2,b-html5-1.1.2,b-print-1.1.2,cr-1.3.1/datatables.min.css"/>
+ 
+    <script type="text/javascript" src="https://cdn.datatables.net/t/bs/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.11,b-1.1.2,b-colvis-1.1.2,b-html5-1.1.2,b-print-1.1.2,cr-1.3.1/datatables.min.js"></script>
           
-       $(document).ready(function(){
-            $.ajaxSetup({
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-            });
-            jQuery.datetimepicker.setLocale('es');
-            jQuery('.datetimepicker').datetimepicker({format:'Y-m-d H:i:s',mask:true});
-            jQuery('.datetimepicker').val("{{Carbon\Carbon::now()->format('Y-m-d H:i:s')}}");
-
-            $(".chosen").chosen();
-
-            if($('#textarea').length >0)
-                CKEDITOR.replace( 'textarea' );
-
-            $('table').DataTable({
-                "language": {
-                    "sProcessing":     "Procesando...",
-                    "sLengthMenu":     "Mostrar _MENU_ registros",
-                    "sZeroRecords":    "No se encontraron resultados",
-                    "sEmptyTable":     "Ningún dato disponible en esta tabla",
-                    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-                    "sInfoPostFix":    "",
-                    "sSearch":         "Buscar:",
-                    "sUrl":            "",
-                    "sInfoThousands":  ",",
-                    "sLoadingRecords": "Cargando...",
-                    "oPaginate": {
-                        "sFirst":    "Primero",
-                        "sLast":     "Último",
-                        "sNext":     "Siguiente",
-                        "sPrevious": "Anterior"
-                    },
-                    "oAria": {
-                        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                    }
-                }
-            });
-            $('table').addClass("table-dondensed")
-       });
-   </script>
+    @include('layouts.partials.initialscript')
 </head>

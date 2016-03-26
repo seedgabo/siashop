@@ -5,8 +5,8 @@
 	    -ms-transition: all .5s ease-in-out;
 	     -o-transition: all .5s ease-in-out;
 	        transition: all .5s ease-in-out;
-	border-color: #A5ABFF;
-	border-width: 1px;
+		border-color: #A5ABFF;
+		border-width: 1px;
 }
 .hover:hover
 {
@@ -23,4 +23,11 @@
 table.table
 {
 	background-color: white;
+
+}
+
+input.input-xs
+{
+	height: 20px;
+	font-size: 12px;
 }

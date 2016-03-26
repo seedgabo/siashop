@@ -16,7 +16,7 @@
 
 
 		<div class="table-responsive container">
-			<table class="table table-bordered table-condensed table-hover text-center">
+			<table class="table datatable table-bordered table-condensed table-hover text-center">
 				<thead>
 					<tr>
 						<th>Codigo</th>
@@ -24,7 +24,7 @@
 						<th>Precio Unitario</th>
 						<th>Cantidad</th>
 						<th>Total</th>
-						<th style="color:#2A4AA5; text-decoration: underline; ">Acción</th>
+						<th style="color:#2A4AA5; text-decoration: underline; ">Acciones</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -48,8 +48,8 @@
 				</div>
 				@endforelse
 				</tbody>
-				@if(sizeof($carrito) >0)
-					<tfoot>
+					@if (sizeof($carrito)>0)
+					<thead>
 					<tr>					
 						<th></th>
 						<th></th>
@@ -58,10 +58,20 @@
 						<th class="text-center">TOTAL: {{number_format($total,2,",",".")}} </th>
 						<th class="text-center"><a href="{{url('ajax/eliminarCarrito/')}}" class="btn btn-danger btn-sm btn-block" type="button"><i class="fa fa-trash-o"></i> Limpiar Carrito </a></th>
 					</tr>
+					</thead>
+					@endif
+					<tfoot>
+						<tr>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+						</tr>
 					</tfoot>
-				@endif
 			</table>
-			</div>
+		</div>
 		</div>
 	
 		@if (sizeof($carrito)>0)

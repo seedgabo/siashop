@@ -50,6 +50,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'clienteSet' => \App\Http\Middleware\clienteSet::class,
         'EmpresaSet' => \App\Http\Middleware\EmpresaSet::class,
-        'isAdmin'    => \App\Http\Middleware\isAdmin::class
+        'isAdmin'    => \App\Http\Middleware\isAdmin::class,
+        'isAjax'     => \App\Http\Middleware\isAjax::class
     ];
 }

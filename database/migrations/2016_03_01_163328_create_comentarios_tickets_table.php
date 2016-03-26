@@ -18,7 +18,7 @@ class CreateComentariosTicketsTable extends Migration
 			$table->text('texto');
             $table->integer('user_id');
             $table->integer('ticket_id');
-            $table->string('archivo');
+            $table->string('archivo')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
         });

@@ -3,7 +3,7 @@
 <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/js/fileinput.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/js/fileinput_locale_es.min.js"></script>
-	<div class="container">
+	<div class="">
 	<div class="text-center">
 		<ol class="breadcrumb">
 			<li>
@@ -19,7 +19,8 @@
 		<a class="btn btn-primary" data-toggle="modal" href='#modal-ticket'><i class="fa fa-plus"></i> Crear un ticket</a>
 		<hr>
 	</div>
-		<table class="table table-hover table-bordered">
+	<div class="table-responsive">
+		<table class="table table-hover datatable">
 			<thead>
 				<tr>
 					<th>Ticket</th>
@@ -41,7 +42,7 @@
 						<span class="badge label-success">{{App\Models\ComentariosTickets::where("ticket_id",$ticket->id)->count()}}</span>
 						</a>
 						@if ($ticket->user_id == Auth::user()->id)
-							<a class="btn pull-right btn-xs btn-danger" onclick="return confirm('esta seguro de que desea eliminar este ticket?')" href="{{url("ticket/eliminar/".$ticket->id)}}"> <i class="fa fa-trash"></i></a>
+							<a class="btn text-right btn-xs btn-danger" onclick="return confirm('esta seguro de que desea eliminar este ticket?')" href="{{url("ticket/eliminar/".$ticket->id)}}"> <i class="fa fa-trash"></i></a>
 						@endif
 					</td>
 					<td>{{\App\Models\categoriasTickets::find($ticket->categoria_id)->nombre}}</td>
@@ -56,7 +57,20 @@
 			 	Ningún ticket existente
 			 @endforelse
 			</tbody>
+			<tfoot>
+				<tr>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</tfoot>
 		</table>
+	</div>
 	</div>
 
 	<div class="modal fade" id="modal-ticket">
@@ -147,6 +161,9 @@
 		        uploadClass: "btn btn-info",
 			});
 
+				$('#modal-ticket').on('shown.bs.modal', function () {
+				  $('.chosen').chosen('destroy').chosen();
+				});
 		});
 	</script>
 @stop

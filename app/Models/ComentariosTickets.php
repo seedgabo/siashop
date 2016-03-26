@@ -6,13 +6,12 @@ use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class ComentariosTickets extends Model
 {
-    use SoftDeletes;
 
     public $table = "comentarios_tickets";
-    
+
 	protected $dates = ['deleted_at'];
 
-    
+
     public $fillable = [
         "texto",
 		"user_id",
@@ -33,8 +32,9 @@ class ComentariosTickets extends Model
         "archivo"  => "image|max:20000"
     ];
 
-    public function archivo()    
+    public function archivo()
     {
         return  asset("archivos/ComentariosTickets/" . $this->id . "." . explode(".",$this->archivo)[1]);
     }
+
 }

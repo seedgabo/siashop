@@ -8,10 +8,10 @@
         @if (! Auth::guest())
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="{{asset('/img/user.jpg')}}" class="img-circle" alt="User Image" />
+                    <img src="{{App\Funciones::getUrlProfile()}}" class="img-circle" alt="User Image" />
                 </div>
                 <div class="pull-left info">
-                    <p>{{ Auth::user()->nombre }}</p>
+                   <p> <a href="{{url('profile')}}">{{ Auth::user()->nombre }} <br> (Ver Perfil)</a></p>
                 </div>
             </div>
         @endif
@@ -34,6 +34,11 @@
                 (@if (Session::has('cliente')){{ \App\Funciones::getCliente()['NOM_TER'] }}@endif)
                 </span>
             </a></li>
+            <li><a href="{{ url('cartera') }}">
+                <i class='fa fa-briefcase'></i> 
+                <span>Cartera
+                </span>
+            </a></li>
             @if (Session::has('cliente'))
             <li><a href="{{ url('catalogo') }}">
                 <i class='fa fa-credit-card'></i> 
@@ -47,7 +52,7 @@
             </a></li>
             @endif
             <li class="treeview">
-                <a href="#"><i class='fa fa-ticket'></i> <span>Tickets</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <a href="#"><i class='fa fa-ticket'></i> <span>Matriz de Seguimiento</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="{{asset('mis-tickets')}}">Mis Tickets</a></li>
                     <li><a href="{{asset('ticket')}}">Tickets Abiertos</a></li>

@@ -7,7 +7,7 @@
         <div class="col-md-6">
                 <div class="panel panel-info hover">
                     <div class="panel-body text-center">
-                      <a href="#" onclick="alert('No Disponible')" disabled  class="disabled">
+                      <a href="{{url('cartera')}}">
                         <img src="{{asset('img/cartera.jpg')}}" height="200" alt="">
                         <h5>Cartera</h5>
                       </a>
@@ -39,7 +39,7 @@
                     <div class="panel-body text-center">
                       <a href="{{url('ticket')}}">
                         <img src="{{asset('img/tickets.jpg')}}" height="200" alt="">
-                        <h5>Tickets de Soporte</h5>
+                        <h5>Matriz de Seguimiento</h5>
                       </a>
                     </div>
                 </div>

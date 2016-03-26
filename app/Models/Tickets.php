@@ -7,13 +7,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tickets extends Model
 {
-    use SoftDeletes;
 
     public $table = "tickets";
-    
-	protected $dates = ['deleted_at',"vencimiento"];
 
-    
+	protected $dates = ['deleted_at'];
+
+
     public $fillable = [
         "titulo",
 		"contenido",
@@ -23,7 +22,8 @@ class Tickets extends Model
 		"categoria_id",
 		"archivo",
         "vencimiento",
-        "transferible"
+        "transferible",
+        "created_at"
     ];
 
     /**
@@ -39,8 +39,7 @@ class Tickets extends Model
 		"estado" => "string",
 		"categoria_id" => "string",
 		"archivo" => "string",
-        "vencimiento" => "date",
-        "transferible" => "string"
+        "transferible" => "string",
     ];
 
     /**
@@ -63,11 +62,11 @@ class Tickets extends Model
     {
         $tickets = Tickets::all();
         $permitidas = [];
-        foreach ($tickets as $ticket) 
+        foreach ($tickets as $ticket)
         {
              if (in_array($ticket->categoria_id  ,$categorias->id))
                 $permitidas[] =  $ticket;
-         } 
+         }
         return $permitidas;
     }
 
@@ -80,4 +79,5 @@ class Tickets extends Model
     {
         return $this->belongsTo('App\Models\CategoriasTickets', 'categoria_id', 'id');
     }
+
 }
