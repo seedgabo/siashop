@@ -49,19 +49,4 @@
 
     @include('layouts.partials.initialscript')
 
-    <script>
-       $(document).ready(function(){
-            $.ajaxSetup({
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-            });
-            jQuery.datetimepicker.setLocale('es');
-            jQuery('.datetimepicker').datetimepicker({format:'Y-m-d H:i:s',mask:true});
-            jQuery('.datetimepicker').val("{{Carbon\Carbon::now()->format('Y-m-d H:i:s')}}");
-
-            $(".chosen").chosen({disable_search_threshold: 10});
-
-            if($('#textarea').length >0)
-                CKEDITOR.replace( 'textarea' );
-       });
-   </script>
 </head>

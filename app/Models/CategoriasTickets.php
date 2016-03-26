@@ -36,17 +36,12 @@ class CategoriasTickets extends Model
          }
         return collect($permitidas);
     }
+
+    public function  Users()
+    {
+        return \App\User::wherein("id",$this->user_id)->get();
+    }
     
-    public function  Users()
-    {
-        return \App\User::wherein("id",$this->user_id)->get();
-    }
-
-    public function  Users()
-    {
-        return \App\User::wherein("id",$this->user_id)->get();
-    }
-
     protected $casts = [
         "nombre" => "string",
 		"descripción" => "string",
