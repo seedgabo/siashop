@@ -30,7 +30,7 @@ class Funciones
             }
         }
     }
-    
+
     /**
      * Traduce una fecha a español según el formato dado
      * @param  Carbon  $date       Fecha a traducir
@@ -212,6 +212,10 @@ class Funciones
     {
         if(File::exists(public_path().'/img/'. Funciones::getEmpresa()->id .'/productos/' . trim($producto['COD_REF']) .".jpg"))
             return $url = asset('img/'. Funciones::getEmpresa()->id .'/productos/' . trim($producto['COD_REF']) .".jpg");
+
+        if(File::exists(public_path().'/img/'. Funciones::getEmpresa()->id .'/productos/' . trim($producto['COD_REF']) .".png"))
+            return $url = asset('img/'. Funciones::getEmpresa()->id .'/productos/' . trim($producto['COD_REF']) .".png");
+
         else
             return $url = asset("img/nodisponible.jpg");
     }
