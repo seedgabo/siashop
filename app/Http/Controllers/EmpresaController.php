@@ -75,6 +75,10 @@ class EmpresaController extends Controller
         $data['emails'] = explode(",", $request->get('emails'));
         $empresa=Empresas::find($id);
         $empresa->fill($data);
+        $empresa->cartera_global = $request->get('cartera_global', false);
+        $empresa->clientes_global = $request->get('clientes_global', false);
+        $empresa->cantidad_global = $request->get('cantidad_global', false);
+        $empresa->precio_global = $request->get('precio_global', false);
         $empresa->save();
         Flash::success('Empresa Actualizada');
         return redirect('Empresa');

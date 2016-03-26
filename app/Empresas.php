@@ -11,13 +11,16 @@ class Empresas extends Model
 
        protected $fillable =
        [
-        'nombre', 'direccion_base_de_datos','emails','direccion_tabla_clientes','num_ped'
-    	];
+        'nombre', 'direccion_base_de_datos','emails','direccion_tabla_clientes','num_ped', 'cartera_global', 'precio_global','clientes_global'
+        ];
 
 
       protected $casts =
       [
         'emails' => 'array',
-    	];
-       
+        'cartera_global' => 'boolean',
+        'clientes_global' => 'boolean',
+        'precio_global' => 'boolean'
+      ];
+
 }

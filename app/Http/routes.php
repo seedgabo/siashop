@@ -10,7 +10,7 @@ Route::group(['middleware' => 'web'], function () {
 
 	Route::group([], function() {
 		Route::auth();
-	  	Route::get('/home', 'HomeController@index');
+		Route::get('/home', 'HomeController@index');
 		Route::any('/menu',   ['middleware' => ['EmpresaSet'], 'uses' =>'HomeController@menu']);
 		Route::any('/catalogo', ['middleware' => ['EmpresaSet','clienteSet'], 'uses' =>'HomeController@catalogo']);
 		Route::any('/clientes', ['middleware' => ['EmpresaSet'], 'uses' =>'HomeController@clientes']);
@@ -47,36 +47,39 @@ Route::group(['middleware' => 'web'], function () {
 		Route::any('Empresa/delete/{id}', [
 			'as' => 'usuario.delete',
 			'uses' => 'EmpresaController@destroy'
-			]);
+		]);
 
 		Route::resource('Usuarios', 'UsuarioController');
 		Route::any('Usuarios/delete/{id}', [
 			'as' => 'usuario.delete',
 			'uses' => 'UsuarioController@destroy'
-			]);
+		]);
 
 		Route::resource("tickets", "TicketsController");
 		Route::get('tickets/delete/{id}', [
-		    'as' => 'tickets.delete',
-		    'uses' => 'TicketsController@destroy',
+			'as' => 'tickets.delete',
+			'uses' => 'TicketsController@destroy',
 		]);
 
 		Route::resource("categoriasTickets", "CategoriasTicketsController");
 		Route::get('categoriasTickets/delete/{id}', [
-		    'as' => 'categoriasTickets.delete',
-		    'uses' => 'CategoriasTicketsController@destroy',
+			'as' => 'categoriasTickets.delete',
+			'uses' => 'CategoriasTicketsController@destroy',
 		]);
 	});
 
+
 	Route::group(['prefix' => 'upload','middleware' =>['isAjax']], function() {
-	   Route::any('/cargarImagenes/{id}', ['uses' =>'UploadController@cargarImagenes']);
+		Route::any('/cargarImagenes/{id}', ['uses' =>'UploadController@cargarImagenes']);
 	});
 
 
 	Route::post('tickets/', [
-		    'as' => 'tickets.store',
-		    'uses' => 'TicketsController@store',
-		]);
+		'as' => 'tickets.store',
+		'uses' => 'TicketsController@store',
+	]);
 
-
+	Route::any('input', function(Request $request){
+		return $request::all();
+	})->name('input');
 });

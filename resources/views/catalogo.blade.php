@@ -2,40 +2,40 @@
 
 @section('header')
  <link rel="stylesheet" href="{{asset('css/lightbox.min.css')}}">
-@stop	
+@stop
 @section('content')
 	<div class="container">
 		<div class="well">
-			{{ Form::open(['method' => 'GET', 'class' => 'form-inline' , 'id' => "busquedaForm"]) }}		
+			{{ Form::open(['method' => 'GET', 'class' => 'form-inline' , 'id' => "busquedaForm"]) }}
 			   <div class="form-group">
 				   <div class="col-xs-9">
 					    <select class="form-control" name="clave">
-		   		    		<option value="NOM_REF">Nombre</option> 
-		   		    		<option value="COD_REF">Codigo</option> 
-		   		    		<option value="VAL_REF">Precio</option> 
+		   		    		<option value="NOM_REF">Nombre</option>
+		   		    		<option value="COD_REF">Codigo</option>
+		   		    		<option value="VAL_REF">Precio</option>
 		   		    	</select>
-				   </div> 
+				   </div>
 			   </div>
 
 			    <div class="form-group @if($errors->first('NOM_REF')) has-error @endif">
 			        <div class="col-xs-9">
-			        	{{ Form::text('valor',null, ['class' => 'form-control']) }}		        	
+			        	{{ Form::text('valor',null, ['class' => 'form-control']) }}
 			        	<small class="text-danger">{{ $errors->first('NOM_REF') }}</small>
 			    	</div>
 			    </div>
-			
+
 			    <div class="form-group">
-			        {{ Form::submit("Buscar", ['class' => 'btn btn-primary']) }}		    
-			    </div>			
+			        {{ Form::submit("Buscar", ['class' => 'btn btn-primary']) }}
+			    </div>
 			{{ Form::close() }}
 		</div>
-		
+
 
 		<div class="text-center">
 			{!! $paginator !!}
 		</div>
-		
-		<?php $i=0; ?>	
+
+		<?php $i=0; ?>
 		@forelse ($productos as $producto)
 			<div class="col-md-4 col-sm-6 col-xs-12">
 				<div class="well text-center hover" width="100%">
@@ -54,13 +54,17 @@
 						<input class="form-control input-sm" type="number" name="cantidad" value="0" min="1">
 						<br><br>
 						<input class="btn btn-sm btn-info" type="submit" value="Agregar al Carrito">
-					</form>	
+					</form>
 					<small>{{$producto["COD_REF"]}}</small>
 					<p class="text-right">
-						<small>	
-							Existencia: {{$producto['EXISTENCIA']}} <br> 
+						<small>
+                        @if($empresa->cantidad_global)
+							Existencia: {{$producto['EXISTENCIA']}} <br>
 							Pedidos: {{$producto['SALD_PED']}} <br>
+                        @endif
+                        @if($empresa->precio_global)
 							<button onclick="$('#{{$i++}}').attr('type','number'); $(this).hide()" class="btn btn-xs"> Editar precio </button>
+                        @endif
 						</small>
 					</p>
 				</div>
@@ -74,9 +78,9 @@
 		</div>
 	</div>
 	<script>
-		$(document).ready(function() { 
-            // bind 'myForm' and provide a simple callback function 
-            $('.form-product').ajaxForm(function(data) { 
+		$(document).ready(function() {
+            // bind 'myForm' and provide a simple callback function
+            $('.form-product').ajaxForm(function(data) {
             	$.toast({
             		heading: 'Producto '+ data +' Agregado al Carrito ',
             		text: "<br><br><a href='{!!url('/carrito')!!}'><h3> ir al  <i class='fa fa-cart-plus'> Carrito </h3></a>",
@@ -85,7 +89,7 @@
             		position: 'top-center',
     				stack: false
             	})
-            }); 
-        }); 
+            });
+        });
 	</script>
 @stop

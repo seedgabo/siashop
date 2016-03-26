@@ -17,9 +17,11 @@ class CreateEmpresasTable extends Migration
             $table->string('nombre');
             $table->string("direccion_base_de_datos",255);
             $table->string("direccion_tabla_clientes",255);
-            $table->integer('num_ped')->nullable();
-            $table->integer('cartera_global')->default(1);
-            $table->integer('clientes_global')->default(1);
+            $table->integer('num_ped')->default(10000)->nullable();
+            $table->boolean('cartera_global')->default(1);
+            $table->boolean('clientes_global')->default(1);
+            $table->boolean('precio_global')->default(1);
+            $table->boolean('cantidad_global')->default(1);
             $table->string("emails");
             $table->timestamps();
         });
@@ -34,5 +36,5 @@ class CreateEmpresasTable extends Migration
     {
         Schema::drop('empresas');
     }
-    
+
 }
