@@ -75,7 +75,7 @@
 			@endforelse
 		</div>
 
-		{!! Form::open(['method' => 'POST', 'url' => 'ajax/addComentarioTicket', 'class' => 'form-horizontal', 'id' => 'form-comentario', "files" => "true"]) !!}
+		{!! Form::open(['method' => 'POST', 'url' => 'ajax/addComentarioTicket', 'class' => 'form-horizontal form-comentario', 'id' => 'form-comentario', "files" => "true"]) !!}
 			<input type="hidden" name="comentario[ticket_id]" value="{{$ticket->id}}">
 			<input type="hidden" name="comentario[user_id]" value="{{Auth::user()->id}}">
 			<textarea rows="6" required="required" minlength="8" class="form-control" name="comentario[texto]" placeholder="Agrega aqui algun aporte para el ticket"></textarea>

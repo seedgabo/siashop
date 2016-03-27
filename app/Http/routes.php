@@ -27,6 +27,7 @@ Route::group(['middleware' => 'web'], function () {
 		Route::get('ticket/eliminar/{id}', ['middleware' => ['EmpresaSet'], 'uses' =>'HomeController@ticketEliminar']);
 	});
 
+
 	Route::group(['prefix' => 'ajax'], function() {
 		Route::any('/setEmpresa/{empresa}','AjaxController@setEmpresa');
 		Route::any('/setCliente/{cliente}','AjaxController@setCliente');

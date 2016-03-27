@@ -1,10 +1,10 @@
-<?php 
+<?php
 namespace App;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Input;
 
-class Dbf 
+class Dbf
 {
 	/**
 	 * path hacia la base de datos
@@ -30,14 +30,14 @@ class Dbf
 
 	// Constructor debe tener el path a donde esta ubicada la base de datos
 	public function __construct ($path, $where = null)
-	{	
+	{
 		$this->path = $path;
 		if (isset($where))
 		{
 		 	$this->where= $where;
 		}
 	}
-
+	
 	/**
 	 * Obtiene todos los registros que coincidan con el array where
 	 * @return Collection Array de objetos con todos los valores encontrados
@@ -110,10 +110,10 @@ class Dbf
 	{
 		if (isset($fila['deleted']))
 			unset($fila['deleted']);
-		$fila = array_values($fila);	
+		$fila = array_values($fila);
 		$db = dbase_open($this->path, 2);
 		if ($db) {
-		  	dbase_add_record($db, $fila); 
+		  	dbase_add_record($db, $fila);
 		  	$num = dbase_numrecords($db);
 		  	dbase_close($db);
 		    return $num;
@@ -163,19 +163,19 @@ class Dbf
 	}
 
 	/**
-	 * Devuelve un html con la paginación 
+	 * Devuelve un html con la paginación
 	 * @return String Html con la paginación compatible con Bootstrap
 	 */
 	public function links()
 	{
 		$pagina = Input::get('p', 0);
-		$html = " 
+		$html = "
 		<ul class='pagination'>
 			<li ";
 
-			if ((int)$pagina <= 0) {  $html.= " class='disabled' "; }		       
-		
-		 $html.= " > <a href='" ; 
+			if ((int)$pagina <= 0) {  $html.= " class='disabled' "; }
+
+		 $html.= " > <a href='" ;
 		 			if ((int)$pagina > 0) {  $html.=  url()->current() . "?p=" . ($pagina -1) .  "' aria-label='Anterior'>";}
 		 			else {$html.= "#!'"; }
 
@@ -192,5 +192,5 @@ class Dbf
 		 </ul>";
 
 		  return $html;
-	}	
+	}
 }

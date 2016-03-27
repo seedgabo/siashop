@@ -2,31 +2,33 @@
 {
 	-webkit-transition: all .5s ease-in-out;
 	   -moz-transition: all .5s ease-in-out;
-	    -ms-transition: all .5s ease-in-out;
-	     -o-transition: all .5s ease-in-out;
-	        transition: all .5s ease-in-out;
+		-ms-transition: all .5s ease-in-out;
+		 -o-transition: all .5s ease-in-out;
+			transition: all .5s ease-in-out;
 		border-color: #A5ABFF;
 		border-width: 1px;
 }
 .hover:hover
 {
-	box-shadow: 5px 10px 15px black;
+	box-shadow: 5px 5px 10px #254c6c;
 }
 
 
-#form-comentario
+
+
+.form-comentario
 {
-	border-style: dashed !important;
-	border-width: 1px !important;
-	border-color: gray !important;
+	border-style: dashed;
+	border-width: 1px;
+	border-color: gray;
 }
-table.table
+.table
 {
 	background-color: white;
 
 }
 
-input.input-xs
+.input-xs
 {
 	height: 20px;
 	font-size: 12px;
