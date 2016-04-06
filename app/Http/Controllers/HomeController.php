@@ -54,7 +54,7 @@ class HomeController extends Controller
     }
 
     public function clientes(Request $request)
-    {        
+    {
         if (Input::has('valor'))
             $clientes = (new Dbf(Funciones::getPathCli()))->where(Input::get('clave'), Input::get('valor'))->get();
         else
@@ -77,7 +77,7 @@ class HomeController extends Controller
 
          $porcliente= $cartera->get()->groupBy('COD_TER');
          $total = $cartera->get()->sum("SALDO");
-        foreach ($porcliente as  $COD_TER => $clientes) 
+        foreach ($porcliente as  $COD_TER => $clientes)
         {
             $cliente[$COD_TER] = $clientes[0];
             $cliente[$COD_TER]["TOTAL"] = $clientes->sum("SALDO");
@@ -102,7 +102,9 @@ class HomeController extends Controller
 
     public function profile (Request $request)
     {
-        return view('profile')->withUser(Auth::user());
+        $qr = array("email" => Auth::user()->email, "dominio" => url(""), "password" => "");
+        $qr = json_encode($qr);
+        return view('profile')->withUser(Auth::user())->withQr($qr);
     }
 
     public function profileUpdate (Request $request)
@@ -143,7 +145,7 @@ class HomeController extends Controller
         ->orderBy("categoria_id","asc")
         ->orderBy("created_at")
         ->get();
-        return  view('tickets')->withTickets($tickets);    
+        return  view('tickets')->withTickets($tickets);
     }
 
     public function misTickets(Request $request)
@@ -152,7 +154,7 @@ class HomeController extends Controller
         ->orderBy("categoria_id","asc")
         ->orderBy("created_at")
         ->get();
-        return  view('tickets')->withTickets($tickets);    
+        return  view('tickets')->withTickets($tickets);
     }
 
     public function todostickets(Request $request)
@@ -167,9 +169,9 @@ class HomeController extends Controller
         {
             $tickets = Tickets::all();
         }
-        return  view('tickets')->withTickets($tickets);    
+        return  view('tickets')->withTickets($tickets);
     }
-    
+
     public function ticketVer(Request $request, $id)
     {
         $ticket= Tickets::find($id);

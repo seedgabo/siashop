@@ -28,7 +28,9 @@ class Dbf
 	public $paginator = "";
 
 
-	// Constructor debe tener el path a donde esta ubicada la base de datos
+	/**
+	 * Constructor debe tener el path a donde esta ubicada la base de datos
+	 */
 	public function __construct ($path, $where = null)
 	{
 		$this->path = $path;
@@ -37,7 +39,7 @@ class Dbf
 		 	$this->where= $where;
 		}
 	}
-	
+
 	/**
 	 * Obtiene todos los registros que coincidan con el array where
 	 * @return Collection Array de objetos con todos los valores encontrados

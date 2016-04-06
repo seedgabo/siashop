@@ -38,7 +38,7 @@
 					{!! Form::label('estado', 'Estado:') !!}
 	    			{!! Form::select('estado', ['abierto' => 'abierto', 'completado' => 'completado', 'en curso' => 'en curso', ' rechazado' => ' rechazado'], $ticket->estado, ['id'=> 'estado','class' => 'form-control chosen', 'onChange' => "cambiarEstado($ticket->id , this.value)"]) !!}
 				</div>
-				@if ($ticket->transferible == 1 && $ticket->guardian_id == Auth::user()->id)
+				@if ($ticket->transferible == 1 || $ticket->guardian_id == Auth::user()->id)
 				<div class="col-md-3 form-inline">
 					{!! Form::label('guardian', 'Responsable:') !!}
 	    			{!! Form::select('guardian',$ticket->categoria->users()->lists("nombre","id"), $ticket->guardian_id, ['id'=> 'estado','class' => 'form-control chosen', 'onChange' => "cambiarGuardian($ticket->id , this.value)"]) !!}

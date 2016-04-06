@@ -51,6 +51,8 @@ class Kernel extends HttpKernel
         'clienteSet' => \App\Http\Middleware\clienteSet::class,
         'EmpresaSet' => \App\Http\Middleware\EmpresaSet::class,
         'isAdmin'    => \App\Http\Middleware\isAdmin::class,
-        'isAjax'     => \App\Http\Middleware\isAjax::class
+        'isAjax'     => \App\Http\Middleware\isAjax::class,
+        'api'     => \App\Http\Middleware\api::class,
+        'auth.basic.once'     => \App\Http\Middleware\AuthenticateOnceWithBasicAuth::class
     ];
 }

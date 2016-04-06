@@ -75,9 +75,9 @@ class Tickets extends Model
         return asset("archivos/tickets/". $this->archivo);
     }
 
+
     public function categoria()
     {
         return $this->belongsTo('App\Models\CategoriasTickets', 'categoria_id', 'id');
     }
-
 }

@@ -3,7 +3,11 @@
 use App\Funciones;
 use Illuminate\Support\Facades\Input;
 
+header('Access-Control-Allow-Origin:*');
 
+header('Access-Control-Allow-Methods:GET, POST, PUT, DELETE, OPTIONS');
+
+header('Access-Control-Allow-Headers:Origin, Content-Type, Accept, Authorization, X-Requested-With');
 
 Route::any('/', function(){return redirect('/login');});
 Route::group(['middleware' => 'web'], function () {
@@ -79,6 +83,13 @@ Route::group(['middleware' => 'web'], function () {
 		'as' => 'tickets.store',
 		'uses' => 'TicketsController@store',
 	]);
+
+
+	Route::group(['prefix' => 'api', 'middleware' => 'api'], function(){
+		Route::get('getproductos', 'ApiController@getProductos');
+		Route::get('auth', ['middleware' => 'auth.basic.once', 'uses' => 'ApiController@doLogin']);
+
+	});
 
 	Route::any('input', function(Request $request){
 		return $request::all();
