@@ -16,14 +16,44 @@ use Illuminate\Support\Facades\Input;
 
 class ApiController extends Controller
 {
+    public function doLogin (Request $request){
 
+        $response = Auth::user();
+        $response["img"] = Funciones::getUrlProfile();
+        return $response;
+    }
 
-    public function getProductos (Request $request){
+    public function getEmpresas (Request $request){
 
-		$request->session()->put('empresa',1);
+        $empresas = Auth::user()->empresas();
+
+		return \Response::json($empresas, 200);
+	}
+
+    public function getClientes (Request $request, $empresa){
+
+        $request->session()->put('empresa',$empresa);
+
+        $referencia = (new  \App\Dbf(Funciones::getPathCli()));
+        $clientes = $referencia->get();
+        $clientes = $clientes->toArray();
+
+        return \Response::json($clientes, 200);
+    }
+
+    public function getProductos (Request $request, $empresa){
+
+		$request->session()->put('empresa',$empresa);
 
 		$referencia = (new  \App\Dbf(Funciones::getPathRef()));
-		$productos = $referencia->paginate(12);
+        if ($request->input('p', -1) == -1)
+        {
+            $productos = $referencia->get();
+        }
+        else
+        {
+            $productos = $referencia->paginate(12);
+        }
         $productos = $productos->toArray();
 
         foreach ($productos as $producto) {
@@ -34,11 +64,6 @@ class ApiController extends Controller
 		return \Response::json($array, 200);
 	}
 
-    public function doLogin (Request $request){
 
-        $response = Auth::user();
-        $response["img"] = Funciones::getUrlProfile();
-        return $response;
-    }
 
 }

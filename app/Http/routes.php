@@ -4,13 +4,16 @@ use App\Funciones;
 use Illuminate\Support\Facades\Input;
 
 header('Access-Control-Allow-Origin:*');
-
 header('Access-Control-Allow-Methods:GET, POST, PUT, DELETE, OPTIONS');
-
 header('Access-Control-Allow-Headers:Origin, Content-Type, Accept, Authorization, X-Requested-With');
+
 
 Route::any('/', function(){return redirect('/login');});
 Route::group(['middleware' => 'web'], function () {
+
+	Route::any('input', function(Request $request){
+		return $request::all();
+	})->name('input');
 
 	Route::group([], function() {
 		Route::auth();
@@ -78,20 +81,16 @@ Route::group(['middleware' => 'web'], function () {
 		Route::any('/cargarImagenes/{id}', ['uses' =>'UploadController@cargarImagenes']);
 	});
 
-
 	Route::post('tickets/', [
 		'as' => 'tickets.store',
 		'uses' => 'TicketsController@store',
 	]);
 
-
-	Route::group(['prefix' => 'api', 'middleware' => 'api'], function(){
-		Route::get('getproductos', 'ApiController@getProductos');
-		Route::get('auth', ['middleware' => 'auth.basic.once', 'uses' => 'ApiController@doLogin']);
-
+	Route::group(['prefix' => 'api', 'middleware' => ['api','auth.basic.once']], function(){
+		Route::get('{empresa}/getProductos', 'ApiController@getProductos');
+		Route::get('{empresa}/getClientes', 'ApiController@getClientes');
+		Route::get('getEmpresas', 'ApiController@getEmpresas');
 	});
-
-	Route::any('input', function(Request $request){
-		return $request::all();
-	})->name('input');
 });
+
+Route::get('api/auth', ['middleware' => 'auth.basic.once', 'uses' => 'ApiController@doLogin']);
