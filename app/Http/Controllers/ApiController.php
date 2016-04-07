@@ -41,6 +41,7 @@ class ApiController extends Controller
         return \Response::json($clientes, 200);
     }
 
+
     public function getProductos (Request $request, $empresa){
 
 		$request->session()->put('empresa',$empresa);
