@@ -15,8 +15,6 @@ class CreateEmpresasTable extends Migration
         Schema::create('empresas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            $table->string("direccion_base_de_datos",255);
-            $table->string("direccion_tabla_clientes",255);
             $table->integer('num_ped')->default(10000)->nullable();
             $table->boolean('cartera_global')->default(1);
             $table->boolean('clientes_global')->default(1);

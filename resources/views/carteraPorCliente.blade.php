@@ -8,7 +8,7 @@
 		<li class="active">{{$cartera[0]["NOM_TER"]}}</li>
 	</ol>
 </div>
-<div class="table-responsive">	
+<div class="table-responsive">
 	<table class="table datatable table-hover table-bordered" data-page-length="25" width="100%">
 		<thead>
 			<tr>
@@ -17,6 +17,7 @@
 				<th># Factura</th>
 				<th>Fecha Documento</th>
 				<th>Fecha Vencimiento</th>
+				<th>Valor de  <br> Factura</th>
 				<th class="text-success">De 1 a 30</th>
 				<th class="text-success">De 31 a 60</th>
 				<th class="text-success">De 61 a 90</th>
@@ -31,8 +32,9 @@
 				<td>{{$elemento["COD_TER"]}}</td>
 				<td>{{$elemento["NOM_TER"]}}</td>
 				<td>{{$elemento["NUM_TRN"]}}</td>
-				<td>{{(new Carbon\Carbon($elemento["FEC_DOC"]))->format("d/m/Y")}}</td>
+				<td data-type="date">{{$elemento["FEC_DOC"]}}</td>
 				<td data-type="date">{{ $elemento["FEC_VEN"]}}</td>
+				<td >{{ number_format($elemento["VALOR"],0,",",".")}}</td>
 				<td class="text-success">{{number_format($elemento["A130"],0,",",".")}}</td>
 				<td class="text-success">{{number_format($elemento["A3160"],0,",",".")}}</td>
 				<td class="text-success">{{number_format($elemento["A6190"],0,",",".")}}</td>

@@ -77,7 +77,7 @@ Route::group(['middleware' => 'web'], function () {
 	});
 
 
-	Route::group(['prefix' => 'upload','middleware' =>['isAjax']], function() {
+	Route::group(['prefix' => 'upload'], function() {
 		Route::any('/cargarImagenes/{id}', ['uses' =>'UploadController@cargarImagenes']);
 	});
 
@@ -89,6 +89,7 @@ Route::group(['middleware' => 'web'], function () {
 	Route::group(['prefix' => 'api', 'middleware' => ['api','auth.basic.once']], function(){
 		Route::get('{empresa}/getProductos', 'ApiController@getProductos');
 		Route::get('{empresa}/getClientes', 'ApiController@getClientes');
+		Route::get('{empresa}/getCartera', 'ApiController@getCartera');
 		Route::get('getEmpresas', 'ApiController@getEmpresas');
 	});
 });

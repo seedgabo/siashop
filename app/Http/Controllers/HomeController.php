@@ -11,6 +11,7 @@ use App\Models\ComentariosTickets;
 use App\Models\Tickets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Laracasts\Flash\Flash;
@@ -41,25 +42,60 @@ class HomeController extends Controller
         return view('menu')->withEmpresa($empresa);
     }
 
-    public function catalogo(Request $request)
-    {
-        $empresa = Funciones::getEmpresa();
-        $referencia = (new  Dbf(Funciones::getPathRef()));
-        if (Input::has('valor'))
-            $productos = $referencia->where(Input::get('clave'), Input::get('valor'))->paginate(15);
-        else
-            $productos = $referencia->paginate(12);
+    public function catalogo(Request $request){
 
-        return view('catalogo')->withEmpresa($empresa)->withProductos($productos)->withPaginator($referencia->links());
+        $empresa = $request->session()->get('empresa');
+
+        $query =  \App\Producto::orderBy($request->get("orden","NOM_REF"),$request->get("orden_dir","asc"));
+        
+        if (Input::has('valor') && Input::get('valor') != '')
+            $query->where(Input::get('clave'), "like" ,"%" . Input::get('valor') . "%");
+
+        if($request->exists('cod_tip') && $request->input('cod_tip') != '')
+            $query->where("cod_tip","=",$request->input('cod_tip'));
+
+        if($request->exists('cod_gru') && $request->input('cod_gru') != '')
+            $query->where("cod_gru","=",$request->input('cod_gru'));
+
+        $query->where("empresa_id",$empresa)->orWhereNull("empresa_id");
+        $productos = $query->paginate(21);
+        
+        $lineas = DB::table('mae_tip')->lists("nom_tip","cod_tip");
+        $grupos = DB::table('mae_gru')->where("cod_tip","=",$request->input('cod_tip', ''))->lists("nom_gru","cod_gru");
+
+        return view('catalogo')
+        ->withEmpresa(\App\Empresas::find($empresa))
+        ->withProductos($productos)
+        ->withGrupos($grupos)
+        ->withLineas($lineas);
     }
 
     public function clientes(Request $request)
     {
-        if (Input::has('valor'))
-            $clientes = (new Dbf(Funciones::getPathCli()))->where(Input::get('clave'), Input::get('valor'))->get();
-        else
-            $clientes = (new Dbf(Funciones::getPathCli()))->get();
+        if (Auth::user()->COD_CLI  != "") {
+            $request->session()->put("cliente", Auth::user()->COD_CLI);
+            Flash::Warning("Usuario del Tipo Cliente");
+            return redirect("catalogo");
+        }
 
+        $empresa = $request->session()->get('empresa');
+
+        $query = \App\Cliente::select("*");
+        $query->where(function($q) use ($empresa){
+            $q->where("empresa_id",$empresa)
+              ->orWhereNull("empresa_id");
+         });
+
+        if (Input::has('valor'))
+            $query->where(Input::get('clave'), "like" , "%".Input::get('valor')."%");
+
+        if(Auth::user()->clientes_propios  == "1")
+        {
+            $query->where("COD_VEN","=",Auth::user()->cod_vendedor);
+            Flash::Warning("Mostrando Cartera Propia");
+        }
+        // return $query->toSql();
+        $clientes = $query->orderby("NOM_TER","asc")->paginate(100);
         return view('clientes')->withClientes($clientes);
     }
 
@@ -73,30 +109,43 @@ class HomeController extends Controller
 
     public function cartera (Request $request)
     {
-        $cartera =  (new \App\Dbf(Funciones::getPathCar()));
-
-         $porcliente= $cartera->get()->groupBy('COD_TER');
-         $total = $cartera->get()->sum("SALDO");
-        foreach ($porcliente as  $COD_TER => $clientes)
-        {
-            $cliente[$COD_TER] = $clientes[0];
-            $cliente[$COD_TER]["TOTAL"] = $clientes->sum("SALDO");
-            $cliente[$COD_TER]["SIN_VEN"] = $clientes->sum("SIN_VEN");
-            $cliente[$COD_TER]["A130"] = $clientes->sum("A130");
-            $cliente[$COD_TER]["A3160"] = $clientes->sum("A3160");
-            $cliente[$COD_TER]["A6190"] = $clientes->sum("A6190");
-            $cliente[$COD_TER]["A91120"] = $clientes->sum("A91120");
-            $cliente[$COD_TER]["MAS120"] = $clientes->sum("MAS120");
+        $empresa = $request->session()->get("empresa");
+        if (Auth::user()->COD_CLI != "") {
+            $cartera =  \App\Cartera::where("COD_TER", Auth::user()->COD_CLI)->where("empresa_id",$empresa)->orWhereNull("empresa_id")->get();
         }
-        return view("cartera")->withCartera($cliente)->withTotal($total);
+        else {
+            $cartera =  \App\Cartera::where("empresa_id",$empresa)->orWhereNull("empresa_id")
+            ->orderby("NOM_TER","asc")->get();
+        }
+
+         $porcliente= $cartera->groupBy('COD_TER');
+         $total = $cartera->sum("SALDO");
+        if(sizeof($porcliente) > 1)
+        {
+            foreach ($porcliente as  $COD_TER => $clientes)
+            {
+                $cliente[$COD_TER] = $clientes[0];
+                $cliente[$COD_TER]["TOTAL"] = $clientes->sum("SALDO");
+                $cliente[$COD_TER]["SIN_VEN"] = $clientes->sum("SIN_VEN");
+                $cliente[$COD_TER]["A130"] = $clientes->sum("A130");
+                $cliente[$COD_TER]["A3160"] = $clientes->sum("A3160");
+                $cliente[$COD_TER]["A6190"] = $clientes->sum("A6190");
+                $cliente[$COD_TER]["A91120"] = $clientes->sum("A91120");
+                $cliente[$COD_TER]["MAS120"] = $clientes->sum("MAS120");
+            }
+            return view("cartera")->withCartera($cliente)->withTotal($total);
+        }
+        else
+        {
+            Flash::Warning("Mostrando solo la cartera del cliente " . Auth::user()->COD_CLI);
+           return view("cartera")->withCartera($cartera)->withTotal($total); 
+        }
+
     }
 
     public function porCliente (Request $request, $codigo)
     {
-        $cartera =  (new \App\Dbf(Funciones::getPathCar()));
-
-        $cliente= $cartera->where("COD_TER" , $codigo)->get();
-
+        $cliente =  \App\Cartera::where("COD_TER",$codigo)->get();
         return view("carteraPorCliente")->withCartera($cliente);
     }
 
@@ -194,7 +243,7 @@ class HomeController extends Controller
         }
         else
         {
-            \Flash::error("no los permisos necesarios tiene permisos");
+            \Flash::error("No tiene los permisos necesarios");
         }
         return back();
     }

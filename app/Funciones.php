@@ -91,7 +91,7 @@ class Funciones
 
     public static function  getCliente()
     {
-       $cliente = (new Dbf(Funciones::getPathCli()))->where('COD_TER',Session::get('cliente'))->first();
+       $cliente =  \App\Cliente::where("COD_TER", Session::get('cliente'))->first();
        return $cliente;
     }
 
@@ -106,22 +106,6 @@ class Funciones
     {
         $empresa =  Funciones::getEmpresa();
         $num_ped = $empresa->num_ped;
-        $codigos = [];
-        $fila = [];
-        // $pedidos = new Dbf(Funciones::getPathPed());
-        // foreach ($productos as $producto) {
-        //     $fila = [];
-        //     $fila[] = str_pad($num_ped,"0");
-        //     $fila[] = Date('Ymd');
-        //     $fila[] = Funciones::getCliente()['COD_TER'];
-        //     $fila[] = $producto->COD_REF;
-        //     $fila[] = $producto->cantidad;
-        //     $fila[] = $producto->VAL_REF;
-        //     $fila[] = Auth::user()->cod_vendedor;
-        //     $fila[] = 1;
-        //     var_dump($fila);
-        //     $pos[] = $pedidos->insert($fila);
-        // }
 
         foreach ($productos as $producto) {
             $producto->num_ped = $num_ped;
@@ -147,7 +131,7 @@ class Funciones
         $empresa = Funciones::getEmpresa();
         Mail::send('emails.NewUser', ['user' => $user], function ($m) use ($user ,$empresa)
         {
-            $m->from('sistemaSiasoft@siasoftsas.com', $empresa->nombre);
+            $m->from('sistemaSiasoft@siasoftsas.com');
             $m->to($user->email);
             $m->subject('¡Usuario Creado con Exito!');
         });
@@ -210,15 +194,16 @@ class Funciones
      */
     public static function getUrlProducto($producto)
     {
-        if(File::exists(public_path().'/img/'. Funciones::getEmpresa()->id .'/productos/' . trim($producto['COD_REF']) .".jpg"))
-            return $url = asset('img/'. Funciones::getEmpresa()->id .'/productos/' . trim($producto['COD_REF']) .".jpg");
+        if(File::exists(public_path().'/img/'. $producto->empresa_id .'/productos/' . trim($producto->COD_REF) .".jpg"))
+            return $url = asset('img/'. $producto->empresa_id .'/productos/' . trim($producto->COD_REF) .".jpg");
 
-        if(File::exists(public_path().'/img/'. Funciones::getEmpresa()->id .'/productos/' . trim($producto['COD_REF']) .".png"))
-            return $url = asset('img/'. Funciones::getEmpresa()->id .'/productos/' . trim($producto['COD_REF']) .".png");
+        if(File::exists(public_path().'/img/'. $producto->empresa_id .'/productos/' . trim($producto->COD_REF) .".png"))
+            return $url = asset('img/'. $producto->empresa_id .'/productos/' . trim($producto->COD_REF) .".png");
 
         else
             return $url = asset("img/nodisponible.jpg");
     }
+
 
     /**
      * Obtiene la url hacia la imagen de perfil del usuario seleccionado

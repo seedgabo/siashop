@@ -41,6 +41,8 @@ class UsuarioController extends Controller
         $data = $request->except("_method","_token");
         $usuario= new User;
         $usuario->fill($data);
+        $usuario->admin = $request->input('admin', '0');
+        $usuario->clientes_propios = $request->input('clientes_propios', '0');
         $usuario->password = Hash::make($request->input('cod_vendedor'));
         $usuario->save();
         \App\Funciones::sendMailUser($usuario);
@@ -69,7 +71,7 @@ class UsuarioController extends Controller
     public function edit($id)
     {
         $usuario = User::find($id);
-        return view('usuarios.editar')->withUsuario($usuario);    
+        return view('usuarios.editar')->withUsuario($usuario);
     }
 
     /**
@@ -84,6 +86,8 @@ class UsuarioController extends Controller
         $data = $request->except("_method","_token");
         $usuario= User::find($id);
         $usuario->fill($data);
+        $usuario->admin = $request->input('admin', '0');
+        $usuario->clientes_propios = $request->input('clientes_propios', '0');
         if ($request->has('password') && $request->input('password') != "")
             $usuario->password = Hash::make($request->input('password'));
         $usuario->save();

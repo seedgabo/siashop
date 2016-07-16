@@ -80,6 +80,11 @@ class EmpresaController extends Controller
         $empresa->cantidad_global = $request->get('cantidad_global', false);
         $empresa->precio_global = $request->get('precio_global', false);
         $empresa->save();
+        if($request->hasFile("image"))
+        {
+            array_map('unlink', glob(public_path("img/empresas/". $empresa->id .".*")));
+            $request->file("image")->move(public_path("img/empresas"), $empresa->id . "." . $request->file("image")->getClientOriginalExtension());
+        }
         Flash::success('Empresa Actualizada');
         return redirect('Empresa');
     }

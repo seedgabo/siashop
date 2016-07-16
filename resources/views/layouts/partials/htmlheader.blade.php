@@ -1,5 +1,5 @@
 <head>
-    <title> Acceso a Cartera Siasoft </title>
+    <title> Siasoft Web </title>
     <meta charset="UTF-8">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
@@ -9,6 +9,7 @@
 
     <!-- Bootstrap 3.3.4 -->
     <link href="{{ asset('/css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
+    {{-- <link rel="stylesheet" href="https://bootswatch.com/readable/bootstrap.min.css" media="screen" title="no title" charset="utf-8"> --}}
     <!-- Font Awesome Icons -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Ionicons -->

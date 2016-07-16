@@ -14,15 +14,18 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre');
-            $table->string('email')->unique();
             $table->string('password', 60);
-            $table->string('empresas_id')->default("[1]");
             $table->boolean('admin')->default('0');
-            $table->string('cod_vendedor',100)->unique();
+            $table->boolean('clientes_propios')->default('0');
             $table->rememberToken();
             $table->timestamps();
         });
+        DB::statement('ALTER TABLE [dbo].[users] ADD  [nombre] varchar(255) NOT NULL');
+        DB::statement('ALTER TABLE [dbo].[users] ADD  [email] varchar(255) UNIQUE');
+        DB::statement("ALTER TABLE [dbo].[users] ADD  [empresas_id] varchar(255) DEFAULT '[1]' ");
+        DB::statement('ALTER TABLE [dbo].[users] ADD  [cod_vendedor] varchar(255)');
+        DB::statement('ALTER TABLE [dbo].[users] ADD  [COD_CLI] varchar(255)  NULL');
+
     }
 
     /**

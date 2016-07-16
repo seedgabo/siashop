@@ -23,15 +23,15 @@
     @endif
 
     <div class="login-box-body">
-    <p class="login-box-msg">Inicia Sessión</p>
+    <p class="login-box-msg">Iniciar Sesión</p>
     <form action="{{ url('/login') }}" method="post">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="form-group has-feedback">
-            <input type="email" class="form-control" placeholder="Email" name="email" value="soporte@siasoftsas.com"/>
+            <input type="email" class="form-control" placeholder="Email" name="email" value=""/>
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="Password" name="password" value="siasoft" />
+            <input type="password" class="form-control" placeholder="Password" name="password" value="" />
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>
         <div class="row">

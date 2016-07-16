@@ -11,14 +11,18 @@
 	</li>
 	@forelse ($usuarios as $usuario)
 	<li class="list-group-item row">
-		<div class="col-md-3">{{$usuario->nombre}}</div>
+		<div class="col-md-3">{{$usuario->nombre}}
+			@if($usuario->COD_CLI  != "")
+				<span class="badge label-warning">Cliente</span>
+			@endif
+		</div>
 		<div class="col-md-3">{{$usuario->email}}</div>
-		<div class="col-md-3">{{$usuario->cod_vendedor}}</div>	
+		<div class="col-md-3">{{$usuario->cod_vendedor}}</div>
 		<div class="col-md-3">
 			<a href="{{url('Usuarios/'. $usuario->id)}}" class="btn btn-info btn-xs"> Editar</a>
 			@if ($usuario->admin != 1 or $usuario->id != Auth::user()->id)
-			<a href="{{url('Usuarios/delete/'. $usuario->id)}}" class="btn btn-danger btn-xs"> Eliminar</a>	
-			@endif		
+			<a href="{{url('Usuarios/delete/'. $usuario->id)}}" class="btn btn-danger btn-xs"> Eliminar</a>
+			@endif
 		</div>
 	</li>
 	@empty

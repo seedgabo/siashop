@@ -61,8 +61,13 @@
 			</fieldset>
 
 
-		{!! Form::submit("Guardar", ['class' => 'btn btn-guardar']) !!}
+		{!! Form::submit("Guardar", ['class' => 'btn btn-block btn-primary']) !!}
 		{!! Form::close() !!}
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
 		 <h5>Ecanea el siguiente codigo de barra con tu telefono para condfigurar el usuario de manera mas facil</h5>
 		<div class="col-md-6 col-md-offset-3" id="qrcode"></div>
 		<script type="text/javascript">

@@ -9,20 +9,18 @@ class CreateCarritosTable extends Migration
     {
         Schema::create('carritos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('user_id');
-            $table->string('empresa_id');
-            // $table->integer('transaccion'); 
-            $table->integer('estado')->default(0);    // 0 "En curso" , 1 "Completada" ,  2 "subida al sistema"
-            $table->integer("num_ped")->nullable();
+            $table->integer('empresa_id');
+            $table->integer('estado')->default(0); // 0 "En curso" , 1 "Completada" ,  2 "subida al sistema"
             $table->integer("cantidad");
-            $table->string("nombre_cliente")->nullable();
-            $table->double('VAL_REF', 15, 3);
-            $table->string("COD_REF");
-            $table->string("NOM_REF");
-            $table->string('COD_CLI');
-            $table->timestamps();
-            $table->softDeletes();
+            $table->integer('VAL_REF');
         });
+        DB::statement("ALTER TABLE [dbo].[carritos] ADD  [user_id] char(5)  NULL  ");
+        DB::statement("ALTER TABLE [dbo].[carritos] ADD  [COD_VEN] char(3)  NULL  ");
+        DB::statement("ALTER TABLE [dbo].[carritos] ADD  [num_ped] char(10) NULL  ");
+        DB::statement("ALTER TABLE [dbo].[carritos] ADD  [fecha]   char(15) NULL  ");
+        DB::statement("ALTER TABLE [dbo].[carritos] ADD  [COD_CLI] char(15) NULL  ");
+        DB::statement("ALTER TABLE [dbo].[carritos] ADD  [COD_REF] char(15) NULL  ");
+        DB::statement("ALTER TABLE [dbo].[carritos] ADD  [NOM_REF] char(50) NULL  ");
     }
 
     /**

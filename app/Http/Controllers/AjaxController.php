@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Models\Tickets;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -19,8 +20,9 @@ class AjaxController extends Controller
     public function setEmpresa(Request $request, $empresa)
     {
         if (in_array($empresa, Auth::user()->empresas_id))
-        {   
+        {
             $request->session()->put('empresa', $empresa);
+            $request->session()->forget('cliente');
             if ($request->ajax())
                 return "true";
             else
@@ -34,11 +36,18 @@ class AjaxController extends Controller
         {
             return  (new Response("No Autorizado", 401));
         }
-    } 
+    }
 
     public function setCliente(Request $request, $cliente)
-    { 
-        $request->session()->put('cliente', $cliente);
+    {
+        if( Auth::user()->COD_CLI != "")
+        {
+            $request->session()->put('cliente', Auth::user()->COD_CLI);
+        }
+        else
+        {
+            $request->session()->put('cliente', $cliente);
+        }
         if ($request->ajax())
         {
             return "true";
@@ -52,7 +61,15 @@ class AjaxController extends Controller
 
     public function addCarrito(Request $request)
     {
-        Carritos::create($request->all());
+        $busqueda  = $request->only('COD_REF', 'COD_VEN', 'COD_CLI', 'empresa_id');
+        $busqueda['estado'] = 0;
+        $carrito = Carritos::firstOrNew($busqueda);
+        $carrito->fill($request->all());
+        $carrito->VAL_REF = floatval($request->get('VAL_REF'));
+        $carrito->num_ped = Funciones::getEmpresa()->num_ped;
+        $fecha = new Carbon();
+        $carrito->fecha= $fecha->format("m/d/Y");
+        $carrito->save();
         if ($request->ajax())
             return "true";
         else
@@ -61,9 +78,9 @@ class AjaxController extends Controller
             return redirect('/catalogo');
         }
     }
-    
+
     public function deleteCarrito($id,Request $request)
-    {   
+    {
         $producto = Carritos::destroy($id);
         if ($request->ajax())
             return "true";
@@ -71,11 +88,11 @@ class AjaxController extends Controller
             FLash::success("Producto  eliminado del Carrito");
             return  redirect('/carrito');
     }
-    
+
     public function clearCarrito(Request $request)
-    {   
+    {
        Funciones::borrarCarrito();
-        
+
         if ($request->ajax())
             return "true";
         else
@@ -84,17 +101,24 @@ class AjaxController extends Controller
     }
 
     public function procesarCarrito(Request $request)
-    {   
+    {
+        $empresa =  Funciones::getEmpresa();
+        $cliente = Funciones::getCliente();
+        $num_ped = $empresa->num_ped;
+        $fecha = new \Carbon\Carbon();
+        $fecha = $fecha->format('d/m/Y');
         $productos = Carritos::where('user_id',Auth::user()->id)
         ->where('COD_CLI',$request->session()->get('cliente'))
+        ->where("estado", "0")->get();
+
+        Carritos::where('user_id',Auth::user()->id)
+        ->where('COD_CLI',$request->session()->get('cliente'))
         ->where("estado", "0")
-        ->get();
-        Funciones::procesarCarrito($productos);
-        $empresa = Funciones::getEmpresa();
-        $cliente = Funciones::getCliente();        
+        ->update(["estado" => "1", "num_ped" => $num_ped, "fecha" => $fecha]);
+
+        $empresa->num_ped++;
+        $empresa->save();
         Funciones::sendMailProccessCarrito($productos, $empresa->emails, Auth::user() ,$empresa,$cliente);
-        Funciones::borrarCarrito();
-        
         if ($request->ajax())
             return "true";
         else
@@ -106,9 +130,9 @@ class AjaxController extends Controller
     {
         $cliente = (new Dbf(Funciones::getPathCli()))->one(1);
         $keys =array_keys($cliente);
-        foreach ($keys as $key) 
+        foreach ($keys as $key)
         {
-            $array[$key] = $request->input($key," "); 
+            $array[$key] = $request->input($key," ");
         }
         $pos = (new Dbf(Funciones::getPathCli()))->insert($array);
         Flash::success("Cliente Agregado exitosamente");
@@ -137,7 +161,7 @@ class AjaxController extends Controller
         $comentario = \App\Models\ComentariosTickets::create($request->input('comentario'));
         Flash::success("Comentario Agregado exitosamente");
         if($request->hasFile('archivo'))
-        {   
+        {
             $nombre = $comentario->id  . "." . $request->file("archivo")->getClientOriginalExtension();
             $request->file('archivo')->move(public_path("archivos/ComentariosTickets/"), $nombre );
             $comentario->archivo =  $request->file("archivo")->getClientOriginalName();
