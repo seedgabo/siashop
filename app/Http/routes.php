@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Input;
 
 header('Access-Control-Allow-Origin:*');
 header('Access-Control-Allow-Methods:GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers:Origin, Content-Type, Accept, Authorization, X-Requested-With');
+header('Access-Control-Allow-Headers:Origin, Content-Type, Accept, Authorization, X-Requested-With,X-XSRF-TOKEN');
 
 
 Route::any('/', function(){return redirect('/login');});
@@ -88,9 +88,11 @@ Route::group(['middleware' => 'web'], function () {
 
 	Route::group(['prefix' => 'api', 'middleware' => ['api','auth.basic.once']], function(){
 		Route::get('{empresa}/getProductos', 'ApiController@getProductos');
+		Route::get('{empresa}/searchProducto', 'ApiController@searchProducto');
 		Route::get('{empresa}/getClientes', 'ApiController@getClientes');
 		Route::get('{empresa}/getCartera', 'ApiController@getCartera');
 		Route::get('getEmpresas', 'ApiController@getEmpresas');
+		Route::get('producto/{id}', 'ApiController@producto');
 	});
 });
 

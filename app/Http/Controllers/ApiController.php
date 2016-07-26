@@ -68,15 +68,42 @@ class ApiController extends Controller
         }
         else
         {
-            $productos = $query->paginate(12);
+            $productos = $query->paginate(50);
         }
 
         foreach ($productos as $producto) {
           $producto->imagen = Funciones::getUrlProducto($producto);
           $array[] = $producto;
         }
-        return \Response::json($array, 200);
+        return $productos;
     }
+
+
+    public function searchProducto (Request $request, $empresa){
+        $request->session()->put('empresa',$empresa);
+        $query = \App\Producto::where("empresa_id",$empresa);
+        $query  = $query->where(function($q) use($request){
+            $q->orWhere("COD_REF", "LIKE", "%". $request->input("query","") ."%");
+            $q->orWhere("NOM_REF", "LIKE", "%". $request->input("query","") ."%");
+            $q->orWhere("COD_TIP", "LIKE", "%". $request->input("query","") ."%");
+        });
+
+        $productos = $query->paginate(50);
+
+
+        foreach ($productos as $producto) {
+          $producto->imagen = Funciones::getUrlProducto($producto);
+          $array[] = $producto;
+        }
+        return $productos;
+    }
+
+    public function producto(Request $request, $id){
+        $producto = \App\Producto::find($id);
+        $producto->imagen = Funciones::getUrlProducto($producto);
+        return $producto;
+    }
+
 
     /**
      * [getCartera description]

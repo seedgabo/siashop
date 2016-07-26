@@ -55,7 +55,9 @@ class AjaxController extends Controller
         else
         {
             Flash::success('Cliente Seleccionado');
-             return redirect()->intended('catalogo');
+            if($request->input("intended") == "carrito")
+                return redirect()->intended('carrito');
+            return redirect()->intended('catalogo');
         }
     }
 

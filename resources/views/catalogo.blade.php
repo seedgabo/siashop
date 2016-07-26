@@ -68,7 +68,10 @@
 			<div class="col-md-4 col-sm-6 col-xs-12">
 				<div class="well text-center hover" width="100%">
 					<a href="{{ App\Funciones::getUrlProducto($producto) }}" data-lightbox='roadtrip' data-title='{{$producto->NOM_REF}}'>
-					<img class="lazy" data-original="{{ App\Funciones::getUrlProducto($producto) }}" height="250px"  width="100%" alt="Imagen no Disponible" @if(isset($_COOKIE['imagenes']) && $_COOKIE['imagenes'] != "true" ) style="display:none"  @endif >
+					<img class="lazy" data-original="{{ App\Funciones::getUrlProducto($producto) }}" height="250px"  width="100%" alt="Imagen no Disponible" 
+					@if(!isset($_COOKIE['imagenes']) || $_COOKIE['imagenes'] == "false" ) 
+						style="display:none"  
+					@endif >
 					</a>
 					<h5>{{str_limit($producto->NOM_REF,30)}}</h5>
 					<p>{{number_format($producto->VAL_REF,2,",",".") }} $</p>
@@ -91,7 +94,12 @@
                         @if($empresa->cantidad_global)
 
 							Existencia: 
-							@if(intval($producto->EXISTENCIA) > 50) Disponible @else {{$producto->EXISTENCIA}} @endif <br>
+							{{-- @if(intval($producto->EXISTENCIA) > 50)  --}}
+							{{-- Disponible  --}}
+							{{-- @else  --}}
+							{{$producto->EXISTENCIA}} 
+							{{-- @endif  --}}
+							<br>
 							Pedidos: {{$producto->SALD_PED}} <br>
                         @endif
                         @if($empresa->precio_global)
