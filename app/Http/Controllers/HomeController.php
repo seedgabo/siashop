@@ -11,6 +11,7 @@ use App\Models\ComentariosTickets;
 use App\Models\Tickets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
@@ -151,7 +152,7 @@ class HomeController extends Controller
 
     public function profile (Request $request)
     {
-        $qr = array("email" => Auth::user()->email, "dominio" => url(""), "password" => "");
+        $qr = array("email" => Auth::user()->email, "url" => url(""), "token" => Crypt::encrypt(Auth::user()->id));
         $qr = json_encode($qr);
         return view('profile')->withUser(Auth::user())->withQr($qr);
     }

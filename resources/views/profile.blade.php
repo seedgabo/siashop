@@ -71,7 +71,10 @@
 		 <h5>Ecanea el siguiente codigo de barra con tu telefono para condfigurar el usuario de manera mas facil</h5>
 		<div class="col-md-6 col-md-offset-3" id="qrcode"></div>
 		<script type="text/javascript">
-			new QRCode(document.getElementById("qrcode"), "{{$qr}}");
+			   var codigo  = { url: '{{url("")}}' , username: '{{Auth::user()->email}}' , token : '{{Crypt::encrypt(Auth::user()->id)}}' }
+				var qrcode = new QRCode("qrcode", {
+					text: JSON.stringify(codigo)
+				});
 		</script>
 	</div>
 @stop

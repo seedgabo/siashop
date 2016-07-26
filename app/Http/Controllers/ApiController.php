@@ -98,8 +98,8 @@ class ApiController extends Controller
         return $productos;
     }
 
-    public function producto(Request $request, $id){
-        $producto = \App\Producto::find($id);
+    public function producto(Request $request, $cod){
+        $producto = \App\Producto::where("COD_REF","=",$cod)->first();
         $producto->imagen = Funciones::getUrlProducto($producto);
         return $producto;
     }
@@ -125,6 +125,16 @@ class ApiController extends Controller
             $cartera = $query->paginate(12);
         }
         return \Response::json($cartera->toArray(), 200);
+    }
+
+    public function procesarCarrito(Request $request, $empresa){
+        $request->session()->put('empresa',$empresa);
+        $data = ($request->all());
+        $response = "";
+        foreach ($data as $producto) {
+             $response .=  $producto['NOM_REF'] . "<br>";
+        }
+        return json_encode(["result" => $response]);
     }
 
 }
