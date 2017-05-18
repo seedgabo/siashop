@@ -13,7 +13,7 @@ class Carritos extends Model
     public $timestamps = false;
     
     protected $fillable = [
-        'NOM_REF','user_id','empresa_id','transaccion','estado','COD_REF','cantidad','VAL_REF', 'nombre_cliente','COD_CLI','COD_VEN', 'fecha'
+        'NOM_REF','user_id','empresa_id','transaccion','estado','COD_REF','cantidad','VAL_REF', 'nombre_cliente','COD_CLI','COD_VEN', 'fecha',"neto","observacion"
     ];
 
     public static function CarritoActual()

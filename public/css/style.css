@@ -14,7 +14,9 @@
 }
 
 
-
+[v-cloak]{
+  display: none;
+}
 
 .form-comentario
 {
@@ -32,4 +34,16 @@
 {
 	height: 20px;
 	font-size: 12px;
+}
+
+.btn-android{
+	background-color: #a4c639;
+	color: white;
+	transition: .3s;
+}
+
+.btn-android:hover{
+	box-shadow: 1px 1px 10px black;
+	background-color: #BDE63D;
+	color: white;
 }

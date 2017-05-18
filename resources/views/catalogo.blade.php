@@ -55,7 +55,9 @@
 
 			{{ Form::close() }}
 		</div>
-
+		<a class="btn btn-warning" href="{{url('catalogo-lista')}}">
+			Ver en lista Rápida
+		</a>
 
 		<div class="text-center">
 			{!! $productos->
@@ -68,9 +70,9 @@
 			<div class="col-md-4 col-sm-6 col-xs-12">
 				<div class="well text-center hover" width="100%">
 					<a href="{{ App\Funciones::getUrlProducto($producto) }}" data-lightbox='roadtrip' data-title='{{$producto->NOM_REF}}'>
-					<img class="lazy" data-original="{{ App\Funciones::getUrlProducto($producto) }}" height="250px"  width="100%" alt="Imagen no Disponible" 
-					@if(!isset($_COOKIE['imagenes']) || $_COOKIE['imagenes'] == "false" ) 
-						style="display:none"  
+					<img class="lazy" data-original="{{ App\Funciones::getUrlProducto($producto) }}" height="250px"  width="100%" alt="Imagen no Disponible"
+					@if(!isset($_COOKIE['imagenes']) || $_COOKIE['imagenes'] == "false" )
+						style="display:none"
 					@endif >
 					</a>
 					<h5>{{str_limit($producto->NOM_REF,30)}}</h5>
@@ -93,11 +95,11 @@
 						<small>
                         @if($empresa->cantidad_global)
 
-							Existencia: 
+							Existencia:
 							{{-- @if(intval($producto->EXISTENCIA) > 50)  --}}
 							{{-- Disponible  --}}
 							{{-- @else  --}}
-							{{$producto->EXISTENCIA}} 
+							{{$producto->EXISTENCIA}}
 							{{-- @endif  --}}
 							<br>
 							Pedidos: {{$producto->SALD_PED}} <br>

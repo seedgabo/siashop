@@ -48,7 +48,7 @@ class HomeController extends Controller
         $empresa = $request->session()->get('empresa');
 
         $query =  \App\Producto::orderBy($request->get("orden","NOM_REF"),$request->get("orden_dir","asc"));
-        
+
         if (Input::has('valor') && Input::get('valor') != '')
             $query->where(Input::get('clave'), "like" ,"%" . Input::get('valor') . "%");
 
@@ -60,11 +60,50 @@ class HomeController extends Controller
 
         $query->where("empresa_id",$empresa)->orWhereNull("empresa_id");
         $productos = $query->paginate(21);
-        
-        $lineas = DB::table('mae_tip')->lists("nom_tip","cod_tip");
-        $grupos = DB::table('mae_gru')->where("cod_tip","=",$request->input('cod_tip', ''))->lists("nom_gru","cod_gru");
+
+        $lineas = DB::table('mae_tip')->where("empresa_id", $empresa)->lists("nom_tip","cod_tip");
+        $grupos = DB::table('mae_gru')->where("empresa_id", $empresa)->where("cod_tip","=",$request->input('cod_tip', ''))->lists("nom_gru","cod_gru");
 
         return view('catalogo')
+        ->withEmpresa(\App\Empresas::find($empresa))
+        ->withProductos($productos)
+        ->withGrupos($grupos)
+        ->withLineas($lineas);
+    }
+
+    public function catalogoLista(Request $request){
+
+        $empresa = $request->session()->get('empresa');
+
+        $query =  \App\Producto::orderBy($request->get("orden","productos.NOM_REF"),$request->get("orden_dir","asc"));
+
+        $query->select("productos.*", "carritos.cantidad as cantidad");
+
+        $query->where("productos.empresa_id",$empresa)->orWhereNull("productos.empresa_id");
+
+        $query->leftJoin('carritos', function($join) use ($request, $empresa)
+        {
+            $join->on('carritos.user_id', '=', Db::raw(Auth::user()->id));
+            $join->on('carritos.estado', '=', Db::raw("0"));
+            $join->on('carritos.COD_CLI', '=', Db::raw("'". $request->session()->get('cliente') . "'"));
+            $join->on('carritos.COD_REF', '=', "productos.COD_REF");
+            $join->on('carritos.empresa_id', '=', Db::raw($empresa));
+        });
+
+        $productos = $query->get();
+
+        // return $productos;
+
+        $lineas = DB::table('mae_tip')->where("empresa_id", $empresa)->lists("nom_tip","cod_tip");
+        $grupos = DB::table('mae_gru')->where("empresa_id", $empresa)
+                  ->where("cod_tip","=",$request->input('cod_tip', ''))->lists("nom_gru","cod_gru");
+
+        foreach ($productos as $producto) {
+          $producto->imagen = Funciones::getUrlProducto($producto);
+          $array[] = $producto;
+        }
+
+        return view('lista-catalogo')
         ->withEmpresa(\App\Empresas::find($empresa))
         ->withProductos($productos)
         ->withGrupos($grupos)
@@ -139,7 +178,7 @@ class HomeController extends Controller
         else
         {
             Flash::Warning("Mostrando solo la cartera del cliente " . Auth::user()->COD_CLI);
-           return view("cartera")->withCartera($cartera)->withTotal($total); 
+           return view("cartera")->withCartera($cartera)->withTotal($total);
         }
 
     }

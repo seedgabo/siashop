@@ -55,8 +55,7 @@ class CategoriasTickets extends Model
      */
     public static $rules = [
         "nombre" => "required|min:3|max:50",
-		"descripción" => "required|min:3",
-		"user_id" => "required"
+		"descripción" => "min:3"
     ];
 
       public function Tickets()

@@ -17,6 +17,7 @@ Route::group(['middleware' => 'web'], function () {
 		Route::get('/home', 'HomeController@index');
 		Route::any('/menu',   ['middleware' => ['EmpresaSet'], 'uses' =>'HomeController@menu']);
 		Route::any('/catalogo', ['middleware' => ['EmpresaSet','clienteSet'], 'uses' =>'HomeController@catalogo']);
+		Route::any('/catalogo-lista', ['middleware' => ['EmpresaSet','clienteSet'], 'uses' =>'HomeController@catalogoLista']);
 		Route::any('/clientes', ['middleware' => ['EmpresaSet'], 'uses' =>'HomeController@clientes']);
 		Route::any('/carrito',  ['middleware' => ['EmpresaSet','clienteSet'], 'uses' =>'HomeController@carrito']);
 		Route::any('/cartera',  ['middleware' => ['EmpresaSet'], 'uses' =>'HomeController@cartera']);
@@ -88,9 +89,11 @@ Route::group(['middleware' => 'web'], function () {
 		Route::get('{empresa}/searchProducto', 'ApiController@searchProducto');
 		Route::get('{empresa}/getClientes', 'ApiController@getClientes');
 		Route::get('{empresa}/getCartera', 'ApiController@getCartera');
+		Route::get('{empresa}/getCartera/{codigo}', 'ApiController@porCliente');
 		Route::get('getEmpresas', 'ApiController@getEmpresas');
 		Route::get('producto/{cod}', 'ApiController@producto');
-		Route::post("{empresa}/procesarCarrito","ApiController@procesarCarrito");
+		Route::any("{empresa}/procesarCarrito","ApiController@procesarCarrito");
+		Route::get("/getDataOffline","ApiController@getDataOffline");
 	});
 });
 

@@ -40,7 +40,7 @@
                 </span>
             </a></li>
             @if (Session::has('cliente'))
-            <li><a href="{{ url('catalogo') }}">
+            <li><a href="{{ url('catalogo-lista') }}">
                 <i class='fa fa-credit-card'></i> 
                 <span>Catalogo</span>
             </a></li>

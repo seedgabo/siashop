@@ -57,7 +57,7 @@ class AjaxController extends Controller
             Flash::success('Cliente Seleccionado');
             if($request->input("intended") == "carrito")
                 return redirect()->intended('carrito');
-            return redirect()->intended('catalogo');
+            return redirect()->intended('catalogo-lista');
         }
     }
 
@@ -73,7 +73,7 @@ class AjaxController extends Controller
         $carrito->fecha= $fecha->format("m/d/Y");
         $carrito->save();
         if ($request->ajax())
-            return "true";
+            return $request->get('NOM_REF');
         else
         {
             Flash::success("Producto " . $request->get('NOM_REF') . " agregado al Carrito <a href='". url('carrito') ."'> IR AL CARRITO </a>");

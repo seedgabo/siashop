@@ -68,13 +68,24 @@
 		<br>
 		<br>
 		<br>
-		 <h5>Ecanea el siguiente codigo de barra con tu telefono para condfigurar el usuario de manera mas facil</h5>
-		<div class="col-md-6 col-md-offset-3" id="qrcode"></div>
+		 <h3 id="apps">Descarga la app y Escanea el siguiente codigo de barra con tu teléfono para configurar</h3>
+		<div class="col-md-4" id="qrcode"></div>
 		<script type="text/javascript">
 			   var codigo  = { url: '{{url("")}}' , username: '{{Auth::user()->email}}' , token : '{{Crypt::encrypt(Auth::user()->id)}}' }
 				var qrcode = new QRCode("qrcode", {
 					text: JSON.stringify(codigo)
 				});
 		</script>
+		<div class="col-md-4">
+			<a href="https://play.google.com/store/apps/details?id=com.seedgabo.siaphone2" target="_blank"
+			   class="btn btn-lg btn-android">
+				<i class="fa fa-android fa-lg fa-fx"></i> Descarga para Android
+			</a>
+			<br><br>
+			<strong>O coloca en tu dispositivo: </strong> <br>
+			<b>URL:</b> {{url("") . "/"}} <br>
+			<b>Usuario:</b> {{Auth::user()->email}} <br>
+			<b>Contraseña:</b> Tu contraseña de acceso <br>
+		</div>
 	</div>
 @stop

@@ -5,7 +5,7 @@
 		<h3 class="col-md-6">{{$empresa->nombre}}</h3>
 		<h3 class="col-md-6 text-right visible-md-block visible-lg-block">{{Auth::user()->nombre}}</h3>
 		<div class="col-md-offset-10 col-md-2">
-			<a class="btn btn-info"href="{{url('catalogo')}}"> Ir al catalogo </a>
+			<a class="btn btn-info btn-lg"href="{{url('catalogo-lista')}}"><i class="fa fa-backward"></i> Ir al catalogo </a>
 		</div>
 		<h2 class="text-center">CARRITO ACTUAL</h2>
 		<h3 class="col-md-12">
@@ -22,6 +22,7 @@
 						<th>Codigo</th>
 						<th>Nombre</th>
 						<th>Precio Unitario</th>
+						<th>Neto</th>
 						<th>Cantidad</th>
 						<th>Total</th>
 						<th style="color:#2A4AA5; text-decoration: underline; ">Acciones</th>
@@ -33,6 +34,7 @@
 						<td>{{$producto->COD_REF}}</td>
 						<td>{{$producto->NOM_REF}}</td>
 						<td>{{number_format($producto->VAL_REF,2,",",".")}}</td>
+						<td>@if($producto->neto) SI @else NO @endif</td>
 						<td>{{$producto->cantidad}}</td>
 						<?php $subtotal = $producto->VAL_REF * $producto->cantidad; $cantidad_total+= $producto->cantidad ?>
 						<td>{{number_format($subtotal,2,",",".")}}</td>
@@ -51,6 +53,7 @@
 					@if (sizeof($carrito)>0)
 					<thead>
 					<tr>					
+						<th></th>
 						<th></th>
 						<th></th>
 						<th></th>

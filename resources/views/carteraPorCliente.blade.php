@@ -17,12 +17,14 @@
 				<th># Factura</th>
 				<th>Fecha Documento</th>
 				<th>Fecha Vencimiento</th>
+				<th>Flete</th>
 				<th>Valor de  <br> Factura</th>
 				<th class="text-success">De 1 a 30</th>
 				<th class="text-success">De 31 a 60</th>
 				<th class="text-success">De 61 a 90</th>
 				<th class="text-success">De 91 a 120</th>
 				<th class="text-success">mas de 120</th>
+				<th>Neto?</th>
 				<th class="text-danger">Total</th>
 			</tr>
 		</thead>
@@ -34,12 +36,14 @@
 				<td>{{$elemento["NUM_TRN"]}}</td>
 				<td data-type="date">{{$elemento["FEC_DOC"]}}</td>
 				<td data-type="date">{{ $elemento["FEC_VEN"]}}</td>
+				<td>{{ number_format($elemento["flete"],0,",",".")}}</td>
 				<td >{{ number_format($elemento["VALOR"],0,",",".")}}</td>
 				<td class="text-success">{{number_format($elemento["A130"],0,",",".")}}</td>
 				<td class="text-success">{{number_format($elemento["A3160"],0,",",".")}}</td>
 				<td class="text-success">{{number_format($elemento["A6190"],0,",",".")}}</td>
 				<td class="text-success">{{number_format($elemento["A91120"],0,",",".")}}</td>
 				<td class="text-success">{{number_format($elemento["MAS120"],0,",",".")}}</td>
+				<td>@if($elemento["neto"]) SI @else NO @endif</td>
 				<td clasS="text-danger">{{number_format($elemento["SALDO"],0,",",".")}}</td>
 			</tr>
 		@empty
